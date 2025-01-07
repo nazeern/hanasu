@@ -32,7 +32,7 @@ export function LogoTitle({
           "": fontColor == "dark",
         })}
       >
-        Hanashi
+        Hanasu
       </p>
     </Link>
   );
