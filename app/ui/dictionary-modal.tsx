@@ -39,9 +39,20 @@ function renderEntries(
       />
     ));
   } else {
-    return Array(3).fill(
-      <div className="bg-slate-400/50 m-2 h-4 w-full rounded-full animate-pulse" />
-    );
+    return [
+      <div
+        key={0}
+        className="bg-slate-400/50 m-2 h-4 w-full rounded-full animate-pulse"
+      />,
+      <div
+        key={1}
+        className="bg-slate-400/50 m-2 h-4 w-full rounded-full animate-pulse"
+      />,
+      <div
+        key={2}
+        className="bg-slate-400/50 m-2 h-4 w-full rounded-full animate-pulse"
+      />,
+    ];
   }
 }
 

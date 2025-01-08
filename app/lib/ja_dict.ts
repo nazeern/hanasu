@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server"
 import kuromoji from "kuromoji";
 import { Interval } from "@/app/ui/rtc-main-app";
+import path from "path";
 
 const featureRanking = ['ichi1', 'news1', 'spec1', 'ichi2', 'news2', 'spec2']
 
@@ -53,8 +54,7 @@ function compareEntries(a: Entry, b: Entry, word: string): number {
 }
 
 const tokenizer = new Promise((resolve, reject) => {
-    console.log(process.cwd())
-    kuromoji.builder({ dicPath: `${process.cwd()}/public/dict/` }).build((err: any, tokenizer: any) => {  // eslint-disable-line
+    kuromoji.builder({ dicPath: path.join(process.cwd(), 'node_modules/kuromoji/dict/') }).build((err: any, tokenizer: any) => {  // eslint-disable-line
       if (err) reject(err);
       else resolve(tokenizer);
     });
@@ -62,8 +62,6 @@ const tokenizer = new Promise((resolve, reject) => {
 
 export async function selectJa(sentence: string, tap: number): Promise<[Entry[] | null, Interval | null]> {
     console.log(sentence, tap)
-    console.log(process.cwd())
-    // return [null, null]
     const tokens = (await tokenizer as any).tokenize(sentence)  // eslint-disable-line
     if (!tokens) { return [null, null] }
     const token = tokens.find((t: any, i: number) => {  // eslint-disable-line
