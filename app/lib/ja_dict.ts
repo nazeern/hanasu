@@ -3,7 +3,6 @@
 import { createClient } from "@/utils/supabase/server"
 import kuromoji from "kuromoji";
 import { Interval } from "@/app/ui/rtc-main-app";
-require('node_modules/kuromoji/dict/')
 
 const featureRanking = ['ichi1', 'news1', 'spec1', 'ichi2', 'news2', 'spec2']
 
