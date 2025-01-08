@@ -1,1 +1,1 @@
-export const BASE_URL_DEFAULT = "https://simpleclip.io"
+export const BASE_URL_DEFAULT = "https://hanasu.ai"
