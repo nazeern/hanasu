@@ -10,7 +10,13 @@ const location = 'global';
 const romanizeTextUrl = `https://translation.googleapis.com/v3/projects/${projectId}/locations/${location}:romanizeText`
 
 // Instantiates a client
-const translationClient = new TranslationServiceClient();
+const translationClient = new TranslationServiceClient({
+    projectId: process.env.GOOGLE_PROJECT_ID ?? "",
+    credentials: {
+        client_email: process.env.GOOGLE_TRANSLATE_CLIENT_EMAIL,
+        private_key: process.env.GOOGLE_TRANSLATE_PRIVATE_KEY,
+    }
+});
 
 export async function translateText(text: string, lang?: string): Promise<string> {
   // Construct request
