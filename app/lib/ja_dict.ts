@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server"
 import kuromoji from "kuromoji";
 import { Interval } from "@/app/ui/rtc-main-app";
+require('node_modules/kuromoji/dict/')
 
 const featureRanking = ['ichi1', 'news1', 'spec1', 'ichi2', 'news2', 'spec2']
 
@@ -53,7 +54,7 @@ function compareEntries(a: Entry, b: Entry, word: string): number {
 }
 
 const tokenizer = new Promise((resolve, reject) => {
-    kuromoji.builder({ dicPath: 'public/dict/' }).build((err: any, tokenizer: any) => {  // eslint-disable-line
+    kuromoji.builder({ dicPath: 'node_modules/kuromoji/dict/' }).build((err: any, tokenizer: any) => {  // eslint-disable-line
       if (err) reject(err);
       else resolve(tokenizer);
     });
