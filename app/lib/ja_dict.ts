@@ -54,6 +54,7 @@ function compareEntries(a: Entry, b: Entry, word: string): number {
 }
 
 const tokenizer = new Promise((resolve, reject) => {
+    console.log(process.cwd())
     kuromoji.builder({ dicPath: 'node_modules/kuromoji/dict/' }).build((err: any, tokenizer: any) => {  // eslint-disable-line
       if (err) reject(err);
       else resolve(tokenizer);
