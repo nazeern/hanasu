@@ -52,42 +52,44 @@ function compareEntries(a: Entry, b: Entry, word: string): number {
     return aRank - bRank
 }
 
-const tokenizer = new Promise((resolve, reject) => {
-    console.log(process.cwd())
-    kuromoji.builder({ dicPath: 'node_modules/kuromoji/dict/' }).build((err: any, tokenizer: any) => {  // eslint-disable-line
-      if (err) reject(err);
-      else resolve(tokenizer);
-    });
-  });
+// const tokenizer = new Promise((resolve, reject) => {
+//     console.log(process.cwd())
+//     kuromoji.builder({ dicPath: 'node_modules/kuromoji/dict/' }).build((err: any, tokenizer: any) => {  // eslint-disable-line
+//       if (err) reject(err);
+//       else resolve(tokenizer);
+//     });
+//   });
 
 export async function selectJa(sentence: string, tap: number): Promise<[Entry[] | null, Interval | null]> {
     console.log(sentence, tap)
-    const tokens = (await tokenizer as any).tokenize(sentence)  // eslint-disable-line
-    if (!tokens) { return [null, null] }
-    const token = tokens.find((t: any, i: number) => {  // eslint-disable-line
-        const pos = t.word_position - 1  // off by one
-        const parsed = t.surface_form
-        return pos <= tap && tap < pos + parsed.length
-    })
-    if (!token) { return [null, null] }
-    console.log(token)
-    const pos = token.word_position - 1
-    const parsed = token.surface_form
+    console.log(process.cwd())
+    return [null, null]
+    // const tokens = (await tokenizer as any).tokenize(sentence)  // eslint-disable-line
+    // if (!tokens) { return [null, null] }
+    // const token = tokens.find((t: any, i: number) => {  // eslint-disable-line
+    //     const pos = t.word_position - 1  // off by one
+    //     const parsed = t.surface_form
+    //     return pos <= tap && tap < pos + parsed.length
+    // })
+    // if (!token) { return [null, null] }
+    // console.log(token)
+    // const pos = token.word_position - 1
+    // const parsed = token.surface_form
 
-    const supabase = await createClient()
-    const {data, error} = await supabase
-        .from('ja_dict')
-        .select('*')
-        .or(`word.eq.${token.surface_form}, readings.cs.{${token.basic_form}}`)
-    if (!data) {
-        console.log(error)
-        return [null, null]
-    } else {
-        return [
-            (data as Entry[]).sort((a, b) => compareEntries(a, b, token.surface_form)),
-            {start: pos, end: pos + parsed.length},
-        ]
-    }
+    // const supabase = await createClient()
+    // const {data, error} = await supabase
+    //     .from('ja_dict')
+    //     .select('*')
+    //     .or(`word.eq.${token.surface_form}, readings.cs.{${token.basic_form}}`)
+    // if (!data) {
+    //     console.log(error)
+    //     return [null, null]
+    // } else {
+    //     return [
+    //         (data as Entry[]).sort((a, b) => compareEntries(a, b, token.surface_form)),
+    //         {start: pos, end: pos + parsed.length},
+    //     ]
+    // }
 }
 
 export async function selectIdJa(wordId?: number): Promise<Entry | null> {
