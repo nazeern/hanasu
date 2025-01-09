@@ -20,7 +20,6 @@ export default function MicButton({
       onMouseLeave={mute}
       onTouchStart={unmute}
       onTouchEnd={mute}
-      onTouchMove={() => console.log("touch move")}
       className={cn("flex gap-1 items-center rounded-md select-none", {
         "mx-auto p-2 bg-primary fill-primarybg": muted,
         "mx-auto p-2 bg-primarybg fill-primary rounded-full border border-primarybg":

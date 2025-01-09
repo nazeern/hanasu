@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Chat, { ChatMessageData, sampleChatMessages } from "@/app/ui/chat"; // eslint-disable-line
 import { BlurBottom, BlurTop } from "@/app/ui/blur";
 import { User } from "@supabase/auth-js";
@@ -302,7 +302,8 @@ export default function RTCMainApp({
   }
 
   /** Disable local microphone. */
-  function mute() {
+  function mute(e: React.TouchEvent | React.MouseEvent) {
+    e.preventDefault();
     const localTrack = rtc.current?.ms?.getAudioTracks()[0];
     if (localTrack) {
       localTrack.enabled = false;
@@ -310,7 +311,8 @@ export default function RTCMainApp({
     }
   }
 
-  function unmute() {
+  function unmute(e: React.TouchEvent | React.MouseEvent) {
+    e.preventDefault();
     const localTrack = rtc.current?.ms?.getAudioTracks()[0];
     if (localTrack) {
       localTrack.enabled = true;
