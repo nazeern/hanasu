@@ -21,7 +21,7 @@ export default async function ChatPage({
   const profile = await selectProfile(user.id);
   const lang = profile?.lang;
   if (!lang) {
-    redirect("dashboard");
+    redirect("/dashboard");
   }
 
   const topic = (await searchParams).topic ?? "What do you want to talk about?";

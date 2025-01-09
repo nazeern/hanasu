@@ -35,6 +35,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          experienced: string[]
           google_access_token: string | null
           id: string
           lang: string
@@ -43,6 +44,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          experienced?: string[]
           google_access_token?: string | null
           id: string
           lang?: string
@@ -51,6 +53,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          experienced?: string[]
           google_access_token?: string | null
           id?: string
           lang?: string

@@ -66,7 +66,6 @@ export type Interval = {
 type ConnectionState = "connecting" | "connected" | "disconnected";
 
 let sessionStart: number = 0;
-let initialized = false;
 
 export default function RTCMainApp({
   user,
@@ -79,11 +78,11 @@ export default function RTCMainApp({
   ephemeralToken: string;
   topic: string;
 }) {
+  const initialized = useRef<boolean>(false);
   const [connState, setConnState] = useState<ConnectionState>("connecting");
   useEffect(() => {
-    if (!initialized) {
-      initialized = true;
-      console.log("starting session");
+    if (!initialized.current) {
+      initialized.current = true;
       startSession(topic);
     }
 
@@ -250,6 +249,7 @@ export default function RTCMainApp({
 
   /** Create a WebRTC session with OpenAI agent. */
   async function initRTC(): Promise<RTCManager> {
+    console.log("init RTC connection");
     setConnState("connecting");
     // When we recv track, autoplay
     const conn = new RTCPeerConnection();
@@ -305,6 +305,7 @@ export default function RTCMainApp({
 
   /** Close the WebRTC connection & related variables. */
   function closeRTC(rtc: RTCManager | null) {
+    console.log("close rtc connection");
     rtc?.ms?.getTracks().forEach((t) => t.stop());
     rtc?.dc?.close();
     rtc?.conn?.close();
@@ -321,6 +322,7 @@ export default function RTCMainApp({
 
   /** Update the prompt of the AI session. */
   async function startSession(topic: string) {
+    console.log("starting session");
     const [rtcSession, sessionId] = await Promise.all([
       initRTC(),
       insertSession(user.id, lang),

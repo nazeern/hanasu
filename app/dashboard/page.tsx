@@ -5,6 +5,10 @@ import { selectIdJa } from "@/app/lib/ja_dict";
 import DashboardPage from "@/app/ui/dashboard-page";
 import { selectProfile } from "@/app/lib/profiles";
 
+enum Experience {
+  ONBOARD = "onboard",
+}
+
 export default async function Page() {
   const supabase = await createClient();
   const {
@@ -18,6 +22,9 @@ export default async function Page() {
     console.log("Could not find user profile information.");
     redirect("/login");
   }
+  // if (!profile?.experienced.includes(Experience.ONBOARD.toString())) {
+  //   redirect("/onboard");
+  // }
   const vocab = await selectLowestScoreVocabulary(user.id);
   const entry = await selectIdJa(vocab?.word_id);
 
