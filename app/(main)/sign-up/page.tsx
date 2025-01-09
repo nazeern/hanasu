@@ -7,12 +7,78 @@ import GoogleButton from "@/app/ui/google-button";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
+type LangInfo = {
+  lang: string;
+  flag: string;
+  name: string;
+  canRomanize?: boolean;
+  supportsDict?: boolean;
+};
+
+const langInfo: LangInfo[] = [
+  {
+    lang: "ja",
+    flag: "🇯🇵",
+    name: "Japanese",
+    canRomanize: true,
+    supportsDict: true,
+  },
+  {
+    lang: "zh-CN",
+    flag: "🇨🇳",
+    name: "Chinese",
+  },
+  {
+    lang: "es",
+    flag: "🇪🇸",
+    name: "Spanish",
+  },
+  {
+    lang: "de",
+    flag: "🇩🇪",
+    name: "German",
+  },
+  {
+    lang: "ta",
+    flag: "🇮🇳",
+    name: "Tamil",
+  },
+  {
+    lang: "hi",
+    flag: "🇮🇳",
+    name: "Hindi",
+    canRomanize: true,
+  },
+  {
+    lang: "ru",
+    flag: "🇷🇺",
+    name: "Russian",
+    canRomanize: true,
+  },
+  {
+    lang: "uk",
+    flag: "🇺🇦",
+    name: "Ukrainian",
+    canRomanize: true,
+  },
+  {
+    lang: "ar",
+    flag: "🇦🇪",
+    name: "Arabic",
+    canRomanize: true,
+  },
+  {
+    lang: "ml",
+    flag: "🇮🇳",
+    name: "Malayalam",
+  },
+];
+
 export default async function SignupPage({
   searchParams,
 }: {
   searchParams: Promise<{
     error?: string;
-    redirectTo?: string;
   }>;
 }) {
   const supabase = await createClient();
@@ -24,7 +90,6 @@ export default async function SignupPage({
   }
   const params = await searchParams;
   const error = params?.error ? decodeURIComponent(params?.error) : null;
-  const redirectTo = params?.redirectTo;
 
   return (
     <>
@@ -78,12 +143,24 @@ export default async function SignupPage({
             required
             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg p-2 mb-3"
           />
-          <input
-            id="redirectTo"
-            name="redirectTo"
-            value={redirectTo}
-            type="hidden"
-          />
+          <label htmlFor="lang" className="">
+            Target Language
+          </label>
+          <select
+            id="lang"
+            name="lang"
+            required
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          >
+            {langInfo.map((info) => (
+              <option key={info.lang} value={info.lang}>
+                {info.name} {info.flag}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs font-bold text-gray-500 -mt-1 mb-4">
+            You can change this at any time.
+          </p>
           <FormButton action={signup} loadingText="Signing up...">
             Sign Up
           </FormButton>

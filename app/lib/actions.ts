@@ -31,7 +31,7 @@ export async function login(formData: FormData) {
   if (redirectTo) {
     redirect(redirectTo)
   } else {
-    redirect('/app')
+    redirect('/dashboard')
   }
 }
 
@@ -41,24 +41,30 @@ export async function signup(formData: FormData) {
   // type-casting here for convenience
   // in practice, you should validate your inputs
   const nameInput = formData.get('name') as string
+  const langInput = formData.get('lang') as string
   const loginData = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   }
 
-  // attempt login, existing users redirect to /projects
+  // attempt login, existing users redirect to /dashboard
   const { error: loginError } = await supabase.auth.signInWithPassword(loginData)
   if (!loginError) {
-    redirect('/app')
+    console.log(loginError)
+    redirect('/dashboard')
   }
 
   // signup
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+  const emailRedirectTo = baseUrl ? `${baseUrl}/dashboard` : undefined
   const signUpData = {
     ...loginData,
     options: {
       data: {
         name: nameInput,
-      }
+        lang: langInput,
+      },
+      emailRedirectTo: emailRedirectTo,
     }
   }
   const { error } = await supabase.auth.signUp(signUpData)
@@ -75,14 +81,9 @@ export async function signup(formData: FormData) {
   revalidatePath('/', 'layout')
 
   // new user, redirect to login with message
-  const redirectTo = formData.get('redirectTo') as string
-  if (redirectTo) {
-    redirect(redirectTo)
-  } else {
-    params.set('success', 'Congrats! Check your inbox for a confirmation email.')
-    params.set('redirectTo', '/pricing')
-    redirect(`/login?${params.toString()}`)
-  }
+  params.set('success', 'Congrats! Check your inbox for a confirmation email.')
+  params.set('redirectTo', '/dashboard')
+  redirect(`/login?${params.toString()}`)
 }
 
 

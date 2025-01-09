@@ -5,7 +5,7 @@ import IconButton from "./icon-button";
 import { useState } from "react";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { Tables } from "@/database.types";
-import { updateProfile } from "../lib/profiles";
+import { updateProfile } from "@/app/lib/profiles";
 
 type LangInfo = {
   lang: string;
