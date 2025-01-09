@@ -5,15 +5,14 @@ import Chat, { ChatMessageData, sampleChatMessages } from "@/app/ui/chat"; // es
 import { BlurBottom, BlurTop } from "@/app/ui/blur";
 import { User } from "@supabase/auth-js";
 import IconButton from "@/app/ui/icon-button";
-import ProfileIcon from "./profile-icon";
-import Microphone from "@/app/icons/microphone";
-import MicrophoneSlash from "../icons/microphone-slash";
+import ProfileIcon from "@/app/ui/profile-icon";
 import debounce from "lodash/debounce";
 import { insertSession, updateSession } from "@/app/lib/sessions";
-import { LogoTitle } from "./logo";
+import { LogoTitle } from "@/app/ui/logo";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { langInfo } from "./lang-select";
+import { langInfo } from "@/app/ui/lang-select";
+import MicButton from "@/app/ui/mic-button";
 
 export type TokenUsage = {
   audio: {
@@ -168,16 +167,7 @@ export default function RTCMainApp({
       {/* Control Bar */}
       {connState == "connected" ? (
         <div className="relative flex items-center pt-4">
-          <IconButton
-            onClick={mute}
-            icon={muted ? MicrophoneSlash : Microphone}
-            size={8}
-            className={
-              muted
-                ? "mx-auto p-2 bg-primary fill-primarybg"
-                : "mx-auto p-2 bg-primarybg fill-primary rounded-full border border-primarybg"
-            }
-          />
+          <MicButton muted={muted} mute={mute} unmute={unmute} />
           <IconButton
             className="absolute right-0 bottompy-1 px-2 bg-red-200 text-red-500"
             onClick={() => closeRTC(rtc.current)}
@@ -315,8 +305,16 @@ export default function RTCMainApp({
   function mute() {
     const localTrack = rtc.current?.ms?.getAudioTracks()[0];
     if (localTrack) {
-      localTrack.enabled = !localTrack.enabled;
-      setMuted((m) => !m);
+      localTrack.enabled = false;
+      setMuted(true);
+    }
+  }
+
+  function unmute() {
+    const localTrack = rtc.current?.ms?.getAudioTracks()[0];
+    if (localTrack) {
+      localTrack.enabled = true;
+      setMuted(false);
     }
   }
 
@@ -343,6 +341,10 @@ export default function RTCMainApp({
             },
             voice: "alloy",
             instructions: `Always speak in ${langName}. You are casually conversing about the user and asking questions in a friendly manner. The topic is: ${topic}`,
+            turn_detection: {
+              type: "server_vad",
+              silence_duration_ms: 800,
+            },
           },
         };
         const responseMsg = {

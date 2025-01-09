@@ -9,13 +9,13 @@ import IconButton from "./icon-button";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 
 export default function OnboardPage({
-  user,
-  profile,
+  user, // eslint-disable-line
+  profile, // eslint-disable-line
 }: {
   user: User;
   profile: Tables<"profiles">;
 }) {
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(0); // eslint-disable-line
   return (
     <div className="flex flex-col h-screen w-screen px-1 py-2">
       <BlurTop />

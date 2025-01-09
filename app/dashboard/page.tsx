@@ -5,9 +5,9 @@ import { selectIdJa } from "@/app/lib/ja_dict";
 import DashboardPage from "@/app/ui/dashboard-page";
 import { selectProfile } from "@/app/lib/profiles";
 
-enum Experience {
-  ONBOARD = "onboard",
-}
+// enum Experience {
+//   ONBOARD = "onboard",
+// }
 
 export default async function Page() {
   const supabase = await createClient();
