@@ -24,6 +24,11 @@ export const langInfo: LangInfo[] = [
     supportsDict: true,
   },
   {
+    lang: "ko",
+    flag: "🇰🇷",
+    name: "Korean",
+  },
+  {
     lang: "zh-CN",
     flag: "🇨🇳",
     name: "Chinese",
