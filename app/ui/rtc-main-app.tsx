@@ -169,7 +169,7 @@ export default function RTCMainApp({
         <div className="relative flex items-center pt-4">
           <MicButton muted={muted} mute={mute} unmute={unmute} />
           <IconButton
-            className="absolute right-2 bottompy-1 px-2 bg-red-200 text-red-500"
+            className="absolute right-2 bottom py-1 px-2 bg-red-200 text-red-500"
             onClick={() => closeRTC(rtc.current)}
             text="End"
           />
