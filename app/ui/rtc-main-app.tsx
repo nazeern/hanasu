@@ -376,31 +376,37 @@ export default function RTCMainApp({
   /** Update the token usage of the session. */
   // eslint-disable-next-line
   function updateTokenUsage(newUsage: any) {
-    setSession((s) => ({
-      ...s,
-      tokenUsage: {
-        audio: {
-          input:
-            s.tokenUsage.audio.input +
-            newUsage.input_token_details.audio_tokens,
-          output:
-            s.tokenUsage.audio.output +
-            newUsage.output_token_details.audio_tokens,
-          input_cached:
-            s.tokenUsage.audio.input_cached +
-            newUsage.input_token_details.cached_tokens_details.audio_tokens,
+    setSession((s) => {
+      const new_text_input =
+        newUsage.input_token_details.text_tokens -
+        newUsage.input_token_details.cached_tokens_details.text_tokens;
+      const new_audio_input =
+        newUsage.input_token_details.audio_tokens -
+        newUsage.input_token_details.cached_tokens_details.audio_tokens;
+
+      return {
+        ...s,
+        tokenUsage: {
+          audio: {
+            input: s.tokenUsage.audio.input + new_audio_input,
+            output:
+              s.tokenUsage.audio.output +
+              newUsage.output_token_details.audio_tokens,
+            input_cached:
+              s.tokenUsage.audio.input_cached +
+              newUsage.input_token_details.cached_tokens_details.audio_tokens,
+          },
+          text: {
+            input: s.tokenUsage.text.input + new_text_input,
+            output:
+              s.tokenUsage.text.output +
+              newUsage.output_token_details.text_tokens,
+            input_cached:
+              s.tokenUsage.text.input_cached +
+              newUsage.input_token_details.cached_tokens_details.text_tokens,
+          },
         },
-        text: {
-          input:
-            s.tokenUsage.text.input + newUsage.input_token_details.text_tokens,
-          output:
-            s.tokenUsage.text.output +
-            newUsage.output_token_details.text_tokens,
-          input_cached:
-            s.tokenUsage.text.input_cached +
-            newUsage.input_token_details.cached_tokens_details.text_tokens,
-        },
-      },
-    }));
+      };
+    });
   }
 }
