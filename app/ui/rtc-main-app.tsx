@@ -169,7 +169,7 @@ export default function RTCMainApp({
         <div className="relative flex items-center pt-4">
           <MicButton muted={muted} mute={mute} unmute={unmute} />
           <IconButton
-            className="absolute right-0 bottompy-1 px-2 bg-red-200 text-red-500"
+            className="absolute right-2 bottompy-1 px-2 bg-red-200 text-red-500"
             onClick={() => closeRTC(rtc.current)}
             text="End"
           />
@@ -302,7 +302,7 @@ export default function RTCMainApp({
   }
 
   /** Disable local microphone. */
-  function mute(e: React.TouchEvent | React.MouseEvent) {
+  function mute(e: React.PointerEvent) {
     e.preventDefault();
     const localTrack = rtc.current?.ms?.getAudioTracks()[0];
     if (localTrack) {
@@ -311,7 +311,7 @@ export default function RTCMainApp({
     }
   }
 
-  function unmute(e: React.TouchEvent | React.MouseEvent) {
+  function unmute(e: React.PointerEvent) {
     e.preventDefault();
     const localTrack = rtc.current?.ms?.getAudioTracks()[0];
     if (localTrack) {
