@@ -346,7 +346,7 @@ export default function RTCMainApp({
             instructions: `Always speak in ${langName}. You are casually conversing about the user and asking questions in a friendly manner. The topic is: ${topic}`,
             turn_detection: {
               type: "server_vad",
-              silence_duration_ms: 800,
+              silence_duration_ms: 1500,
             },
           },
         };
