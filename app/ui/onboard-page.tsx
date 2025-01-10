@@ -17,7 +17,7 @@ export default function OnboardPage({
 }) {
   const [page, setPage] = useState<number>(0); // eslint-disable-line
   return (
-    <div className="flex flex-col h-screen w-screen px-1 py-2">
+    <div className="flex flex-col h-dvh w-screen px-1 py-2">
       <BlurTop />
       <BlurBottom />
       <div className="flex items-start justify-between px-2 py-2">

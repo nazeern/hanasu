@@ -57,7 +57,7 @@ export default function ReviewApp({
 
   if (!entry || !vocab) {
     return (
-      <div className="flex flex-col items-center h-screen w-screen px-1 py-2 gap-4">
+      <div className="flex flex-col items-center h-dvh w-screen px-1 py-2 gap-4">
         <BlurTop />
         <BlurBottom />
         <div className="w-screen flex items-center justify-between px-2 py-2">
@@ -86,7 +86,7 @@ export default function ReviewApp({
   }
 
   return (
-    <div className="flex flex-col items-center h-screen w-screen px-1 py-2">
+    <div className="flex flex-col items-center h-dvh w-screen px-1 py-2">
       <BlurTop />
       <BlurBottom />
       <div className="w-screen flex items-center justify-between px-2 py-2">

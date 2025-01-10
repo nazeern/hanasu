@@ -137,7 +137,7 @@ export default function RTCMainApp({
   }, [userResponseInterval]);
 
   return (
-    <div className="flex flex-col h-screen w-screen px-1 py-2">
+    <div className="flex flex-col h-dvh w-screen px-1 py-2">
       <BlurTop />
       <BlurBottom />
       <audio ref={audioRef} autoPlay={true}></audio>
