@@ -299,6 +299,7 @@ export default function RTCMainApp({
     rtc?.ms?.getTracks().forEach((t) => t.stop());
     rtc?.dc?.close();
     rtc?.conn?.close();
+    setConnState("disconnected");
   }
 
   /** Disable local microphone. */
