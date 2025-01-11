@@ -5,37 +5,36 @@ import { useState } from "react";
 
 const faqs = [
   {
-    question: "What makes SimpleClip different?",
+    question: "What makes Hanasu different?",
     answer:
-      "I made SimpleClip because the alternatives were (1) too expensive, (2) unnecessarily complicated and (3) inconvenient. \
-      SimpleClip is a video editor that puts your message and content first— not fancy color grading or unneeded AI features.",
+      "I made Hanasu because the alternatives were either (1) too expensive, (2) took too long, or (3) inconvenient. \
+      Hanasu is a language app that puts immersion and actual conversation first— not lists of vocabulary.",
   },
   {
-    question: "Who is SimpleClip for?",
+    question: "Who is Hanasu for?",
     answer:
-      "SimpleClip is for anyone with a message to share, from content creators to educators. \
-      Editing should not be a chore— it should be intuitive and simple. \
-      As a content creator, the most tedious part of editing is rewatching clips over and over to cut out bad takes and silences.\
-      SimpleClip takes care of this for you!",
+      "Hanasu is for anyone looking to learn a language for practical usage. \
+      Learning a language shouldn't be a chore— it should feel intuitive and simple. \
+      Nowadays, there are tons of free resources, but the hardest part is actually immersing and exercising what you've learned.\
+      Hanasu takes care of this for you!",
   },
   {
-    question: "Is SimpleClip free?",
+    question: "Is Hanasu free?",
     answer:
-      "You get a full 50 minutes of transcription at no cost! \
-      Try it out for your next shorts or videos, completely risk free. \
-      We will never watermark your video, even on the free tier.",
+      "If you're new, you can get started at no cost! \
+      Running cutting-edge AI models is expensive, but you should be confident before you buy. \
+      (I'll never ask for credit cards for free trials.",
   },
   {
     question: "Do I have to install anything?",
     answer:
-      "Nope! SimpleClip runs entirely within your browser, and autosaves your work to your cloud. Work from any device, and from mobile!",
+      "Nope! Hanasu runs entirely within your browser, and autosaves to your account. Work from any device, and from mobile!",
   },
   {
     question: "How does pricing work?",
     answer:
-      "We offer three pricing options: (1) Pay as You Go, (2) Monthly, and (3) Yearly. \
-      Pay as You Go is just $0.08 per minute, and is suited for solo creators. \
-      A typical short costs just sixteen cents to edit!",
+      "Aside from the free trial, we offer three pricing options: (1) Pay as You Go, (2) Monthly, and (3) Yearly. \
+      Pay as You Go is generally $0.10 for a minute of conversation, and is our most popular option.",
   },
   {
     question: "What is the cancellation policy?",
@@ -57,7 +56,7 @@ export default function FAQ() {
           <div key={index} className="border-b border-gray-200 py-1 px-8">
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full text-left text-3xl font-medium py-2 flex justify-between"
+              className="w-full text-left text-2xl font-medium py-2 flex justify-between"
             >
               {faq.question}
               {index == openIndex ? (

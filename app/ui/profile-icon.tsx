@@ -40,7 +40,7 @@ export default function ProfileIcon({
         </Link>
         <Link
           href={`/sign-up?${signupSearchParams.toString()}`}
-          className="text-sm font-semibold leading-6 bg-blue-600 text-onprimary py-1 px-2 border border-blue-500 rounded-lg hover:bg-primary hover:border-blue-400"
+          className="text-sm font-semibold leading-6 bg-primary text-onprimary py-1 px-2 rounded-lg hover:bg-primary hover:border-blue-400"
         >
           Start Editing
         </Link>
@@ -82,7 +82,7 @@ export default function ProfileIcon({
     return (
       <Link
         href="/dashboard"
-        className="text-sm font-semibold leading-6 bg-blue-600 text-onprimary py-1 px-2 border border-blue-500 rounded-lg hover:bg-primary hover:border-blue-400"
+        className="text-sm font-semibold leading-6 bg-primary text-onprimary py-1 px-2 border border-blue-500 rounded-lg hover:bg-primary hover:border-blue-400"
       >
         Dashboard
       </Link>

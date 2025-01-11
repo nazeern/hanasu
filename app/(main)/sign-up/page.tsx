@@ -15,7 +15,7 @@ type LangInfo = {
   supportsDict?: boolean;
 };
 
-const langInfo: LangInfo[] = [
+export const langInfo: LangInfo[] = [
   {
     lang: "ja",
     flag: "🇯🇵",

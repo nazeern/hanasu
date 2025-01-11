@@ -8,11 +8,11 @@ export default async function HowItWorksRow({
   index: number;
   title: string;
   subtitle: string;
-  imagePath: string;
+  imagePath?: string;
   alt: string;
 }) {
   return (
-    <div className="w-full flex items-center flex-wrap my-12">
+    <div className="w-full flex items-center justify-center flex-wrap my-12">
       <div className="md:w-2/3 flex flex-col items-center justify-center gap-4 p-6">
         {/* Title */}
         <div className="w-full flex justify-between items-center gap-3">
@@ -28,9 +28,11 @@ export default async function HowItWorksRow({
         {/* Subtitle */}
         <p className="text-lg md:ml-20 leading-loose">{subtitle}</p>
       </div>
-      <div className="flex grow items-center justify-center w-1/3 rounded-xl">
-        <img src={imagePath} alt={alt} className="rounded-3xl shadow-2xl" />
-      </div>
+      {imagePath && (
+        <div className="flex grow items-center justify-center w-1/3 rounded-xl">
+          <img src={imagePath} alt={alt} className="rounded-3xl shadow-2xl" />
+        </div>
+      )}
     </div>
   );
 }

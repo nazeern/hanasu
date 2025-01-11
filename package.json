@@ -31,6 +31,7 @@
     "nextjs-toploader": "^3.7.15",
     "react": "^18",
     "react-dom": "^18",
+    "react-typed": "^2.0.12",
     "stripe": "^17.4.0",
     "tailwind-merge": "^2.5.5"
   },

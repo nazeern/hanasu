@@ -1,131 +1,72 @@
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
 import Testimonials from "@/app/ui/testimonials";
 import HowItWorksRow from "@/app/ui/how-it-works";
 import FAQ from "@/app/ui/faq";
-import { LogoTitle } from "@/app/ui/logo";
-
-const bullets = ["Get started for free", "Zero install needed"];
+import { langInfo } from "@/app/(main)/sign-up/page";
+import Typed from "@/app/ui/typed";
+import Footer from "@/app/ui/footer";
+import CTA from "@/app/ui/cta";
 
 export default async function Landing() {
+  const langNames = langInfo.map((info) => info.name);
   return (
     <div className="w-full max-w-7xl flex flex-col items-center gap-y-4 pt-16 md:pt-24 px-2 text-center">
-      <p className="text-5xl md:text-7xl font-medium mb-4">
-        Create content in{" "}
-        <span className="underline decoration-primary">minutes.</span>
-      </p>
+      <div className="text-4xl md:text-7xl font-medium mb-4 leading-tight">
+        I can read <br className="block md:hidden" />
+        <Typed
+          className="text-violet-700 italic"
+          strings={langNames}
+          typeSpeed={50}
+          backSpeed={60}
+          backDelay={1000}
+          loop
+        />
+        , <br />
+        but can&apos;t speak it.
+      </div>
       <p className="text-xl md:text-2xl font-medium w-full max-w-2xl mb-12 leading-loose">
-        SimpleClip is the editor for non-editors. User friendly and lightweight
-        by design, so you can focus on what matters.
+        Learn language through natural conversation topics
       </p>
-      <div className="flex items-center gap-4">
-        <Link
-          href="/sign-up"
-          className="rounded-lg py-2 px-4 bg-blue-600 text-onprimary text-center hover:border hover:border-primarybg hover:bg-primaryhov hover:-translate-y-1 duration-300"
-        >
-          Start Editing &rarr;
-        </Link>
-        <Link
-          href="/pricing"
-          className="rounded-lg py-2 px-4 bg-gray-300 text-center hover:border hover:border-primarybg hover:bg-gray-300/50 hover:-translate-y-1 duration-300"
-        >
-          See Pricing
-        </Link>
-      </div>
-      <div className="flex flex-col gap-y-1 mb-24">
-        {bullets.map((bullet, index) => {
-          return (
-            <div key={index} className="flex items-center gap-x-1">
-              <CheckCircleIcon className="stroke-2 size-5 text-green-700 shrink-0" />
-              <p className="text-md text-gray-700">{bullet}</p>
-            </div>
-          );
-        })}
-      </div>
+      <CTA />
       {/* <video className="w-full h-auto" autoPlay loop muted playsInline>
         Your browser does not support the video tag.
       </video> */}
       {/* How It Works */}
       <HowItWorksRow
         index={1}
-        title="UPLOAD YOUR FOOTAGE"
-        subtitle="Upload directly from mobile & autosave to cloud. No more complicated file transfers and digging through folders."
-        imagePath="PhoneImage.jpg"
-        alt="Shooting Video with Mobile"
+        title="CHOOSE A TOPIC"
+        subtitle="Choose from a rotating set of conversation starters. Feeling creative? Write in a topic of your choice!"
+        // imagePath="PhoneImage.jpg"
+        alt="Choose a Topic"
       />
       <HowItWorksRow
         index={2}
-        title="EDIT LIKE A DOC"
-        subtitle="Cut out bad takes and pauses by deleting text from the transcript— no need to scrub through an editor to find the perfect line."
-        imagePath="Example.jpg"
-        alt="Example of SimpleClip Editor"
+        title="HAVE A CHAT"
+        subtitle="Need help? Double tap the message to reveal, and again to automatically translate."
+        // imagePath="Example.jpg"
+        alt="Have a Chat"
       />
       <HowItWorksRow
         index={3}
-        title="EXPORT AND POST"
-        subtitle="Export & share your finished product, or apply final touches."
-        imagePath="Editor.jpg"
-        alt="Exporting & Editing Video"
+        title="REVIEW"
+        subtitle="Save unfamiliar words to your dictionary, and review them with science-backed spaced repetition."
+        // imagePath="Editor.jpg"
+        alt="Review"
       />
-      <p className="text-5xl mt-48 mb-12">What Our Users are Saying</p>
+      <p className="text-4xl md:text-5xl mt-48 mb-12">
+        What Our Users are Saying
+      </p>
       <Testimonials />
       <p className="text-5xl mt-48 mb-8">Frequently Asked Questions</p>
       <FAQ />
-      <p className="text-xl md:text-7xl font-medium mt-24 mb-4">
-        Create content in{" "}
-        <span className="underline decoration-primary">minutes.</span>
+      <p className="text-4xl md:text-7xl font-medium mt-24">
+        Speak like a{" "}
+        <span className="underline decoration-primary">native</span>
       </p>
-      <p className="text-2xl md:text-4xl font-medium w-full max-w-2xl mb-12 leading-loose">
+      <p className="text-2xl md:text-4xl font-medium w-full max-w-2xl mb-6 leading-loose">
         Get started for free!
       </p>
-      <div className="flex items-center gap-4">
-        <Link
-          href="/sign-up"
-          className="rounded-lg py-2 px-4 bg-blue-600 text-onprimary text-center hover:border hover:border-primarybg hover:bg-primaryhov hover:-translate-y-1 duration-300"
-        >
-          Start Editing &rarr;
-        </Link>
-        <Link
-          href="/pricing"
-          className="rounded-lg py-2 px-4 bg-gray-300 text-center hover:border hover:border-primarybg hover:bg-gray-300/50 hover:-translate-y-1 duration-300"
-        >
-          See Pricing
-        </Link>
-      </div>
-      <div className="flex flex-col gap-y-1 mb-24">
-        {bullets.map((bullet, index) => {
-          return (
-            <div key={index} className="flex items-center gap-x-1">
-              <CheckCircleIcon className="stroke-2 size-5 text-green-700 shrink-0" />
-              <p className="text-md text-gray-700">{bullet}</p>
-            </div>
-          );
-        })}
-      </div>
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-6 w-screen">
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between">
-          {/* Logo and Title */}
-          <div className="flex items-center mb-4 md:mb-0">
-            <LogoTitle />
-          </div>
-          {/* Links */}
-          <div className="flex flex-col gap-3">
-            <Link
-              href="/privacy"
-              className="text-gray-400 hover:text-white transition duration-200"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-gray-400 hover:text-white transition duration-200"
-            >
-              Terms & Conditions
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <CTA />
+      <Footer />
     </div>
   );
 }
