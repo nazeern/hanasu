@@ -1,10 +1,10 @@
 import Testimonials from "@/app/ui/testimonials";
 import HowItWorksRow from "@/app/ui/how-it-works";
 import FAQ from "@/app/ui/faq";
-import { langInfo } from "@/app/(main)/sign-up/page";
 import Typed from "@/app/ui/typed";
 import Footer from "@/app/ui/footer";
 import CTA from "@/app/ui/cta";
+import { langInfo } from "@/app/lib/data";
 
 export default async function Landing() {
   const langNames = langInfo.map((info) => info.name);

@@ -11,7 +11,7 @@ import { insertSession, updateSession } from "@/app/lib/sessions";
 import { LogoTitle } from "@/app/ui/logo";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { langInfo } from "@/app/ui/lang-select";
+import { langInfo } from "@/app/lib/data";
 import MicButton from "@/app/ui/mic-button";
 
 export type TokenUsage = {

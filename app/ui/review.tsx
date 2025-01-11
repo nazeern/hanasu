@@ -21,7 +21,7 @@ import EntryTile from "./entry-tile";
 import ProgressBar from "./progress-bar";
 import { useRouter } from "next/navigation";
 import { LogoTitle } from "@/app/ui/logo";
-import { langInfo } from "./lang-select";
+import { langInfo } from "@/app/lib/data";
 
 let start = performance.now();
 const NUM_QUESTIONS = 10;

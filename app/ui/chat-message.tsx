@@ -11,7 +11,7 @@ import DictionaryModal, {
   DictionaryModalData,
 } from "@/app/ui/dictionary-modal";
 import { selectVocabulary } from "@/app/lib/vocabulary";
-import { langInfo } from "./lang-select";
+import { langInfo } from "@/app/lib/data";
 
 let timeout: ReturnType<typeof setTimeout> | null = null;
 
