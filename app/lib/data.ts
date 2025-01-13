@@ -69,3 +69,60 @@ export const langInfo: LangInfo[] = [
     name: "Malayalam",
   },
 ];
+
+export enum Plan {
+  FREE,
+  USAGE,
+  MONTHLY,
+}
+
+/** Given a string, return corresponding Plan. */
+export function planFromString(planString: string): Plan {
+  switch (planString) {
+    case "pay-as-you-go":
+      return Plan.USAGE
+    case "monthly":
+      return Plan.MONTHLY
+    default:
+      return Plan.FREE
+  }
+}
+/** Given a Stripe priceId, return corresponding Plan. */
+export function planFromPriceId(priceId: string): Plan {
+  switch (priceId) {
+    case process.env.USAGE_PLAN_PRICE_ID:
+      return Plan.USAGE
+    case process.env.MONTHLY_PLAN_PRICE_ID:
+      return Plan.MONTHLY
+    default:
+      return Plan.FREE
+  }
+}
+
+type PlanInfo = {
+  name: string;
+  display: string;
+  priceId: string;
+  limit: number;
+}
+
+export const planInfo: { [plan: string]: PlanInfo } = {
+  [Plan.FREE]: {
+    name: "free",
+    display: "Free Plan",
+    priceId: "",
+    limit: 30,
+  },
+  [Plan.USAGE]: {
+    name: "pay-as-you-go",
+    display: "Pay as You Go Plan",
+    priceId: process.env.USAGE_PLAN_PRICE_ID ?? "",
+    limit: Infinity
+  },
+  [Plan.MONTHLY]: {
+    name: "monthly",
+    display: "Monthly Plan",
+    priceId: process.env.MONTHLY_PLAN_PRICE_ID ?? "",
+    limit: 1000
+  },
+}

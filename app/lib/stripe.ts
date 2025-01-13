@@ -4,11 +4,13 @@ import { createClient } from "@/utils/supabase/server"
 import { User } from "@supabase/auth-js";
 import { round } from "./utils";
 import { getCurrentPlan } from "./profiles";
-import { Plan } from "../ui/plan-card";
 import { revalidatePath } from "next/cache";
+import { Plan } from "@/app/lib/data";
+
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY) // eslint-disable-line
 
 /* Try to get the existing stripe customer id. Else, create a new Stripe customer.*/
-export async function stripeCustomer(stripe: any, user: User): Promise<string | null> {  // eslint-disable-line
+export async function stripeCustomer(user: User): Promise<string | null> {  // eslint-disable-line
 
     // Get saved customer id
     const supabase = await createClient()
@@ -22,16 +24,28 @@ export async function stripeCustomer(stripe: any, user: User): Promise<string | 
     const { stripe_id: customerId, name } = data
     if (customerId) { return customerId }
 
+    // Create new customer on Stripe
     console.log(`Creating new Stripe customer for user ${user.id}`)
-    const customer = await stripe.customers.create({ name, email: user.email })
+    let customer;
+    try {
+        customer = await stripe.customers.create({ name, email: user.email })
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+    if (!customer?.id) {
+        console.log("empty customer_id from Stripe.")
+        return null
+    }
 
+    // Save new customer_id to DB as `stripe_id`
     const { error: saveError } = await supabase
         .from('profiles')
         .update({ stripe_id: customer.id })
         .eq('id', user.id)
     if (saveError) { console.log(`Failed to save customer ${customer.id}`) }
 
-    return customer?.id ?? null
+    return customer.id ?? null
 }
 
 type StripeSubscription = {
@@ -41,7 +55,7 @@ type StripeSubscription = {
 }
 
 /* Subscribe customer id to a given price and return client secret. */
-export async function createStripeSubscription(stripe: any, customerId: string, priceId: string): Promise<StripeSubscription | null> {  // eslint-disable-line
+export async function createStripeSubscription(customerId: string, priceId: string): Promise<StripeSubscription | null> {  // eslint-disable-line
     console.log(`Creating subscription for customer ${customerId}`)
     try {
         const subscription = await stripe.subscriptions.create({
@@ -67,17 +81,24 @@ export async function createStripeSubscription(stripe: any, customerId: string, 
             }
         }
     } catch (error) {
+        console.log(error)
         return null
     }
 }
 
 
 /* Remove old subscriptions. */
-export async function removeOtherSubscriptions(stripe: any, customerId: string, keep: string): Promise<boolean> {  // eslint-disable-line
-    const subscriptions = await stripe.subscriptions.list({
-        customer: customerId,
-        limit: 3,
-    })
+export async function removeOtherSubscriptions(customerId: string, keep: string): Promise<boolean> {
+    let subscriptions;
+    try {
+        subscriptions = await stripe.subscriptions.list({
+            customer: customerId,
+            limit: 3,
+        })
+    } catch (error) {
+        console.log(error)
+        return false
+    }
     const deleteIds: string[] = subscriptions.data
         .map((obj: any) => obj.id)  // eslint-disable-line
         .filter((id: string) => id != keep)
@@ -93,9 +114,6 @@ export async function removeOtherSubscriptions(stripe: any, customerId: string, 
 
 /* Send minutes transcribed to Stripe. Stripe accepts a maximum of 12 decimals. */
 export async function stripeMeterEvent(userId: string, value: number): Promise<boolean> {
-    if (!process.env.STRIPE_SECRET_KEY) { return false }
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)  // eslint-disable-line
-
     const { customerId, plan } = await getCurrentPlan(userId)
     if (!customerId) { 
         console.log(`Failed to meter ${value} for user ${userId}`)
@@ -104,11 +122,11 @@ export async function stripeMeterEvent(userId: string, value: number): Promise<b
     if (plan == Plan.USAGE) {
         console.log(`Sending meter event of ${value}`)
         await stripe.v2.billing.meterEvents.create({
-        event_name: 'simpleclip_minutes_transcribed',
-        payload: {
-            stripe_customer_id: customerId,
-            value: round(value, 12).toString(),
-        },
+            event_name: 'hanasu_chat_minutes',
+            payload: {
+                stripe_customer_id: customerId,
+                value: round(value, 12).toString(),
+            },
         });
     }
     return true
@@ -116,12 +134,9 @@ export async function stripeMeterEvent(userId: string, value: number): Promise<b
 
 
   export async function unsubscribeUser(user: User): Promise<boolean> {
-    if (!process.env.STRIPE_SECRET_KEY) { return false }
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)  // eslint-disable-line
-
-    const customerId = await stripeCustomer(stripe, user)
+    const customerId = await stripeCustomer(user)
     if (!customerId) { return false }
-    const removed = removeOtherSubscriptions(stripe, customerId, "")
+    const removed = removeOtherSubscriptions(customerId, "")
 
     revalidatePath('/account/usage', 'page')
     return removed

@@ -10,8 +10,8 @@ import { useState } from "react";
 import { subscribeUser } from "../lib/profiles";
 import { User } from "@supabase/auth-js";
 import { BASE_URL_DEFAULT } from "../constants";
-import { Plan } from "./plan-card";
 import { LockClosedIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
+import { Plan, planInfo } from "@/app/lib/data";
 
 export default function CheckoutForm({
   user,
@@ -25,6 +25,11 @@ export default function CheckoutForm({
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const planDisplay = planInfo[plan].display;
+  const dashboardMessage = `Congrats! You now have access on the ${planDisplay}!`;
+  const searchParams = new URLSearchParams();
+  searchParams.set("message", dashboardMessage);
 
   return (
     <form onSubmit={handleSubmit} className="mt-12">
@@ -95,7 +100,7 @@ export default function CheckoutForm({
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `${baseUrl}/app`,
+        return_url: `${baseUrl}/dashboard?${searchParams.toString()}`,
       },
     });
 

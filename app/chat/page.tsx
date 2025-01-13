@@ -2,7 +2,10 @@ import RTCMainApp from "@/app/ui/rtc-main-app";
 import { mintEphemeralToken } from "../lib/actions";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { selectProfile } from "../lib/profiles";
+import { getCurrentPlan, selectProfile, upcomingCost } from "../lib/profiles";
+import { Plan, planInfo } from "@/app/lib/data";
+import { querySessions, totalCost } from "@/app/lib/sessions";
+import PaywallMainApp from "@/app/ui/paywall-main-app";
 
 export default async function ChatPage({
   searchParams,
@@ -18,6 +21,30 @@ export default async function ChatPage({
   if (!user) {
     redirect("/login");
   }
+
+  const { plan } = await getCurrentPlan(user.id);
+  const limit = planInfo[plan].limit;
+  const sessions = await querySessions(user.id);
+  const totalConversationTime = sessions.reduce(
+    (acc, s) => acc + s.duration,
+    0
+  );
+  const expense = await totalCost(sessions);
+  const revenue = (await upcomingCost(user.id)) ?? 0;
+
+  // Check plan limit
+  if (totalConversationTime > limit) {
+    console.log(
+      `total conversation time of ${totalConversationTime} over limit of ${limit}`
+    );
+    return <PaywallMainApp user={user} plan={plan} limit={limit} />;
+  }
+
+  // Check product cost
+  if (plan != Plan.FREE && expense > revenue) {
+    console.log(`expense of ${expense} over revenue of ${revenue}`);
+  }
+
   const profile = await selectProfile(user.id);
   const lang = profile?.lang;
   if (!lang) {

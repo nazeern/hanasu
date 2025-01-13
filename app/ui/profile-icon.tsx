@@ -5,7 +5,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import LoadingDots from "./loading_dots";
 import { BoltIcon } from "@heroicons/react/24/solid";
-import { Plan } from "./plan-card";
+import { Plan } from "@/app/lib/data";
 
 export default function ProfileIcon({
   initial,

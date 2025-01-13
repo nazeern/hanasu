@@ -1,52 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/app/lib/utils";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
-
-export enum Plan {
-  FREE = 0,
-  USAGE = 1,
-  MONTHLY = 2,
-  YEARLY = 3,
-}
-// eslint-disable-next-line
-export namespace Plan {
-  export function fromPlanString(planString?: string): Plan {
-    switch (planString) {
-      case "pay-as-you-go":
-        return Plan.USAGE;
-      case "monthly":
-        return Plan.MONTHLY;
-      case "yearly":
-        return Plan.YEARLY;
-      default:
-        return Plan.FREE;
-    }
-  }
-  export function includedMinutes(plan: Plan): number {
-    switch (plan) {
-      case Plan.FREE:
-        return 50;
-      case Plan.USAGE:
-        return Infinity;
-      case Plan.MONTHLY:
-        return 1000;
-      case Plan.YEARLY:
-        return 1000;
-    }
-  }
-  export function toPlanString(plan: Plan): string {
-    switch (plan) {
-      case Plan.FREE:
-        return "Free";
-      case Plan.USAGE:
-        return "Pay as you Go";
-      case Plan.MONTHLY:
-        return "Monthly";
-      case Plan.YEARLY:
-        return "Yearly";
-    }
-  }
-}
+import { Plan } from "@/app/lib/data";
 
 type PlanDetails = {
   title: string;
@@ -67,19 +22,23 @@ type PlanDetails = {
 const renderData: { [key in Plan]: PlanDetails } = {
   [Plan.FREE]: {
     title: "Free",
-    description: "Perfect for getting started with content creation.",
+    description: "Perfect for getting started with language learning.",
     linkTo: "/dashboard",
-    linkText: "Edit for free",
+    linkText: "Try for free",
     price: "$0",
     per: "/ month",
     includedMinutes: undefined,
     bulletHeader: "Get started with:",
     bullets: [
-      "First 50 minutes free",
-      "Export in 1080p",
-      "No watermarks",
-      "Work from any device with Cloud Sync",
-      "Upload & transcribe from mobile",
+      "First 30 chat minutes free",
+      "Learn through natural conversation",
+      "Need help? Chat transcripts are built-in",
+      "Auto-translations powered by Google",
+      "Track your progress with analytics",
+      "Review past sessions at any time",
+      "Integrated dictionary*",
+      "Romanization support*",
+      "Save and review your vocabulary*",
     ],
   },
   [Plan.USAGE]: {
@@ -88,55 +47,45 @@ const renderData: { [key in Plan]: PlanDetails } = {
     tag: "Most Popular",
     featured: true,
     linkTo: "/upgrade?plan=pay-as-you-go",
-    linkText: "Start Editing",
-    price: "$0.08",
-    per: "/ minute transcribed",
+    linkText: "Get Started",
+    price: "$0.05",
+    per: "/ chat minute",
     includedMinutes: undefined,
     bulletHeader: "Everything in the Free Plan, plus:",
     bullets: [
-      "Unlimited transcribe minutes",
-      "Export in 4k",
-      "No watermarks",
-      "Work from any device with Cloud Sync",
-      "Upload & transcribe from mobile",
+      "Unlimited chat minutes",
+      "Learn through natural conversation",
+      "Need help? Chat transcripts are built-in",
+      "Auto-translations powered by Google",
+      "Track your progress with analytics",
+      "Review past sessions at any time",
+      "Integrated dictionary*",
+      "Romanization support*",
+      "Save and review your vocabulary*",
     ],
   },
   [Plan.MONTHLY]: {
     title: "Monthly",
     description:
-      "For creators who consistently create 40 minutes of content every week.",
+      "For dedicated language learners who plan to practice regularly.",
     linkTo: "/upgrade?plan=monthly",
-    linkText: "Start Editing",
-    price: "$12",
+    linkText: "Get Started",
+    price: "$25",
     per: "/ month",
+    originalPrice: "$30",
+    percentOff: "$5 off",
     includedMinutes: undefined,
     bulletHeader: "Everything in the Free Plan, plus:",
     bullets: [
-      "1,000 transcribe minutes every month",
-      "Export in 4k",
-      "No watermarks",
-      "Work from any device with Cloud Sync",
-      "Upload & transcribe from mobile",
-    ],
-  },
-  [Plan.YEARLY]: {
-    title: "Yearly",
-    description: "A special yearly discount for our first 100 users!",
-    linkTo: "/upgrade?plan=yearly",
-    linkText: "Start Editing",
-    tag: "Limited Beta Deal!",
-    price: "$39",
-    per: "/ year",
-    originalPrice: "$144",
-    percentOff: "Save 73%",
-    includedMinutes: undefined,
-    bulletHeader: "Everything in the Free Plan, plus:",
-    bullets: [
-      "1,000 transcribe minutes every month",
-      "Export in 4k",
-      "No watermarks",
-      "Work from any device with Cloud Sync",
-      "Upload & transcribe from mobile",
+      "1,000 chat minutes every month",
+      "Learn through natural conversation",
+      "Need help? Chat transcripts are built-in",
+      "Auto-translations powered by Google",
+      "Track your progress with analytics",
+      "Review past sessions at any time",
+      "Integrated dictionary*",
+      "Romanization support*",
+      "Save and review your vocabulary*",
     ],
   },
 };
@@ -203,7 +152,9 @@ export default async function PlanCard({
           return (
             <div key={index} className="flex items-center gap-x-1">
               <CheckCircleIcon className="stroke-2 size-4 text-green-700 shrink-0" />
-              <p className="text-sm">{bullet}</p>
+              <p className={`${index == 0 && "font-bold italic "}text-sm`}>
+                {bullet}
+              </p>
             </div>
           );
         })}

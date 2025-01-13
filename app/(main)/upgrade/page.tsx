@@ -1,5 +1,6 @@
+import { Plan, planFromString } from "@/app/lib/data";
 import AcceptPayment from "@/app/ui/accept-payment";
-import PlanCard, { Plan } from "@/app/ui/plan-card";
+import PlanCard from "@/app/ui/plan-card";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -14,12 +15,13 @@ export default async function UpgradePage({
   } = await supabase.auth.getUser();
   const params = await searchParams;
   const planString = params.plan;
-  if (!user) {
+  if (!user || !planString) {
     const searchParams = new URLSearchParams();
     searchParams.set("redirectTo", `/upgrade?plan=${planString}`);
     redirect("/sign-up");
   }
-  const plan = Plan.fromPlanString(planString);
+  const plan = planFromString(planString);
+
   if (plan == Plan.FREE) {
     redirect("/dashboard");
   }

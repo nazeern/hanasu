@@ -9,7 +9,13 @@ import { selectProfile } from "@/app/lib/profiles";
 //   ONBOARD = "onboard",
 // }
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    message?: string;
+  }>;
+}) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -28,5 +34,14 @@ export default async function Page() {
   const vocab = await selectLowestScoreVocabulary(user.id);
   const entry = await selectIdJa(vocab?.word_id);
 
-  return <DashboardPage user={user} profile={profile} entry={entry} />;
+  const message = (await searchParams).message;
+
+  return (
+    <DashboardPage
+      user={user}
+      profile={profile}
+      entry={entry}
+      message={message}
+    />
+  );
 }

@@ -13,6 +13,7 @@ import { HomeIcon } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { langInfo } from "@/app/lib/data";
 import MicButton from "@/app/ui/mic-button";
+import { stripeMeterEvent } from "@/app/lib/stripe";
 
 export type TokenUsage = {
   audio: {
@@ -78,6 +79,7 @@ export default function RTCMainApp({
   topic: string;
 }) {
   const initialized = useRef<boolean>(false);
+  const prevDuration = useRef<number>(0);
   const [connState, setConnState] = useState<ConnectionState>("connecting");
   useEffect(() => {
     if (!initialized.current) {
@@ -90,7 +92,15 @@ export default function RTCMainApp({
 
   const persistSession = useCallback(
     debounce(
-      (session, chatMessages) => updateSession(session, chatMessages),
+      (session: Session, chatMessages) => {
+        updateSession(session, chatMessages);
+        const delta = (session.duration - prevDuration.current) / 60;
+        stripeMeterEvent(user.id, delta).then((success) => {
+          if (success) {
+            prevDuration.current = session.duration;
+          }
+        });
+      },
       2 * 1000,
       {
         leading: false,
@@ -130,11 +140,14 @@ export default function RTCMainApp({
         ...s,
         avgResponseDurationMs:
           ((n - 1) / n) * s.avgResponseDurationMs + newDuration / n,
-        duration: Math.round((performance.now() - sessionStart) / 1000),
       }));
       setUserResponseInterval({});
     }
-  }, [userResponseInterval]);
+    setSession((s) => ({
+      ...s,
+      duration: Math.round((performance.now() - sessionStart) / 1000),
+    }));
+  }, [userResponseInterval, chatMessages]);
 
   return (
     <div className="flex flex-col h-dvh w-screen px-1 py-2">

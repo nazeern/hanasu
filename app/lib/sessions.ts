@@ -99,12 +99,15 @@ export async function querySessions(userId: string): Promise<Session[]> {
     if (!userId) {
         return []
     }
+    const date = new Date();
+    const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
 
     const supabase = await createClient()
     const {data, error} = await supabase
         .from('sessions')
         .select('*')
         .eq('user_id', userId)
+        .gte('created_at', firstDayOfMonth.toISOString())
 
     if (!data) {
         console.log(error)
@@ -136,7 +139,7 @@ const oaiPricePerMil: TokenUsage = {
     },
 }
 
-export async function totalCost(sessions: Session[]): Promise<number | null> {
+export async function totalCost(sessions: Session[]): Promise<number> {
     return sessions.reduce((acc, { tokenUsage }) => {
         return acc + 
         tokenUsage.audio.input * oaiPricePerMil.audio.input +

@@ -1,18 +1,17 @@
 export default async function Privacy() {
   return (
     <div className="prose">
-      <h1 id="privacy-policy-for-simpleclip">Privacy Policy for SimpleClip</h1>
-      <p>Effective Date: Nov 16, 2024</p>
+      <h1 id="privacy-policy-for-hanasu">Privacy Policy for Hanasu</h1>
+      <p>Effective Date: Jan 11, 2025</p>
       <p>
-        At SimpleClip, your privacy is important to us. This Privacy Policy
-        explains how we collect, use, and protect your information when you use
-        our website and services.
+        At Hanasu, your privacy is important to us. This Privacy Policy explains
+        how we collect, use, and protect your information when you use our
+        website and services.
       </p>
       <hr />
       <h3 id="1-information-we-collect">1. Information We Collect</h3>
       <p>
-        We may collect the following types of information when you use
-        SimpleClip:
+        We may collect the following types of information when you use Hanasu:
       </p>
       <h4 id="a-personal-information">a. Personal Information</h4>
       <ul>
@@ -31,31 +30,25 @@ export default async function Privacy() {
         </li>
         <li>
           <p>
-            When you subscribe to a plan: SimpleClip does not store any of your
+            When you subscribe to a plan: Hanasu does not store any of your
             personal payment information.
           </p>
         </li>
       </ul>
-      <h4 id="b-uploaded-content">b. Uploaded Content</h4>
+      <h4 id="b-uploaded-content">b. Generated Content</h4>
       <ul>
         <li>
           <p>
-            Videos and other media files you upload, solely for the purpose of
-            providing the transcription and editing service.
-          </p>
-        </li>
-        <li>
-          <p>
-            Text or transcript data generated during editing, solely for the
-            purpose of providing the transcription and editing service.
+            Generated chat messages, solely for the purpose of providing
+            services like translation & integrated dictionaries.
           </p>
         </li>
       </ul>
       <h4 id="c-usage-information">c. Usage Information</h4>
       <ul>
         <li>
-          Depending on your payment plan, we may log your usage of the
-          transcription feature, solely for billing purposes.
+          Depending on your payment plan, we may log your usage of the chat
+          feature, solely for billing purposes.
         </li>
       </ul>
       <h4 id="d-device-information">d. Device Information</h4>
@@ -76,7 +69,10 @@ export default async function Privacy() {
           <p>Process payments and manage subscriptions.</p>
         </li>
         <li>
-          <p>Enable video uploads, edits, and exports.</p>
+          <p>
+            Enable tools like translation, integrated dictionaries, and
+            vocabulary reviews.
+          </p>
         </li>
         <li>
           <p>Communicate with you about updates, promotions, and support.</p>
@@ -89,13 +85,13 @@ export default async function Privacy() {
       <h3 id="3-sharing-your-information">3. Sharing Your Information</h3>
       <p>We will never sell your information to third parties.</p>
       <p>
-        We do share limited data to help provide core functionality, such as:
+        We use non-sensitive data to help provide core functionality, such as:
       </p>
       <ul>
         <li>
           <p>
             Service Providers: Trusted third parties who help us operate the
-            platform (e.g., payment processors, cloud storage providers).
+            platform (e.g., payment processors, translation services).
           </p>
         </li>
         <li>
@@ -106,7 +102,7 @@ export default async function Privacy() {
         </li>
         <li>
           <p>
-            Business Transfers: If SimpleClip is acquired or merges with another
+            Business Transfers: If Hanasu is acquired or merges with another
             company, your information may be transferred as part of the
             transaction.
           </p>
@@ -174,21 +170,21 @@ export default async function Privacy() {
       <hr />
       <h3 id="7-children-s-privacy">7. Children&#39;s Privacy</h3>
       <p>
-        SimpleClip is not intended for users under the age of 13. We do not
+        Hanasu is not intended for users under the age of 13. We do not
         knowingly collect personal information from children. If we become aware
         of such data, we will delete it promptly.
       </p>
       <hr />
       <h3 id="8-third-party-services">8. Third-Party Services</h3>
       <p>
-        SimpleClip may include integrations with third-party services (e.g.,
-        Google, Stripe). These services have their own privacy policies, and we
+        Hanasu may include integrations with third-party services (e.g., Google,
+        Stripe, OpenAI). These services have their own privacy policies, and we
         encourage you to review them.
       </p>
       <hr />
       <h3 id="9-international-users">9. International Users</h3>
       <p>
-        If you access SimpleClip from outside the United States, note that your
+        If you access Hanasu from outside the United States, note that your
         information may be transferred to and processed in the United States or
         other countries.
       </p>

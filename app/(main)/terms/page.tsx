@@ -2,27 +2,27 @@ export default async function Terms() {
   return (
     <div className="prose">
       <h1 id="terms-and-conditions">Terms and Conditions</h1>
-      <p>Last Updated: October 29, 2024</p>
+      <p>Last Updated: Jan 11, 2025</p>
       <p>
-        Welcome to SimpleClip! These Terms and Conditions (&quot;Terms&quot;)
-        govern your use of our website and services, including the tools we
-        provide to upload, edit, and manage video content quickly and
-        efficiently (the &quot;Service&quot;). By accessing or using the
-        Service, you agree to abide by these Terms. If you do not agree, please
-        refrain from using the Service.
+        Welcome to Hanasu! These Terms and Conditions (&quot;Terms&quot;) govern
+        your use of our website and services, including the tools we provide to
+        upload, edit, and manage video content quickly and efficiently (the
+        &quot;Service&quot;). By accessing or using the Service, you agree to
+        abide by these Terms. If you do not agree, please refrain from using the
+        Service.
       </p>
       <hr />
       <h2 id="1-acceptance-of-terms">1. Acceptance of Terms</h2>
       <p>
-        By using or accessing SimpleClip, you agree to be bound by these Terms.
-        We reserve the right to modify or update these Terms at any time, and
-        your continued use of the Service constitutes your acceptance of any
-        changes. We recommend reviewing these Terms periodically.
+        By using or accessing Hanasu, you agree to be bound by these Terms. We
+        reserve the right to modify or update these Terms at any time, and your
+        continued use of the Service constitutes your acceptance of any changes.
+        We recommend reviewing these Terms periodically.
       </p>
       <hr />
       <h2 id="2-eligibility">2. Eligibility</h2>
       <p>
-        The Service is available to users who are at least 18 years of age. By
+        The Service is available to users who are at least 13 years of age. By
         using the Service, you represent that you meet this age requirement. If
         you do not meet this requirement, please do not use the Service.
       </p>
@@ -46,21 +46,28 @@ export default async function Terms() {
       <h2 id="4-user-responsibilities">4. User Responsibilities</h2>
       <h3 id="4-1-appropriate-use">4.1 Appropriate Use</h3>
       <p>
-        You agree to use the Service solely for its intended purpose of video
-        uploading, editing, and management. You agree not to abuse the Service
-        by engaging in activities such as:
+        You agree to use the Service solely for its intended purpose of language
+        learning. You agree not to abuse the Service by engaging in activities
+        such as:
       </p>
       <ul>
         <li>
           <p>
-            Uploading extremely large videos that exceed reasonable usage
-            limits.
+            Deliberately overloading services through excessive and harmful
+            usage, such as playing excessively long videos into the chat
+            service.
           </p>
         </li>
         <li>
           <p>
-            Uploading content that violates intellectual property rights,
+            Producing content that violates intellectual property rights,
             contains harmful or offensive material, or breaches applicable laws.
+          </p>
+        </li>
+        <li>
+          <p>
+            Such activity will be considered abuse of the platform, and you may
+            be held liable for damages.
           </p>
         </li>
       </ul>
@@ -88,9 +95,9 @@ export default async function Terms() {
       <h2 id="6-service-limitations">6. Service Limitations</h2>
       <h3 id="6-1-usage-limits">6.1 Usage Limits</h3>
       <p>
-        The Service may impose certain limitations on file sizes, video length,
-        or editing capacity based on your subscription plan. We reserve the
-        right to enforce these limitations and modify them at any time.
+        The Service may impose certain limitations on chat usage or message
+        length based on your subscription plan. We reserve the right to enforce
+        these limitations and modify them at any time.
       </p>
       <h3 id="6-2-service-availability">6.2 Service Availability</h3>
       <p>
@@ -116,8 +123,8 @@ export default async function Terms() {
       <hr />
       <h2 id="9-limitation-of-liability">9. Limitation of Liability</h2>
       <p>
-        SimpleClip is provided &quot;as-is&quot; without any warranties of any
-        kind. We are not liable for any damages resulting from your use of or
+        Hanasu is provided &quot;as-is&quot; without any warranties of any kind.
+        We are not liable for any damages resulting from your use of or
         inability to use the Service. This limitation of liability applies to
         the fullest extent permitted by law.
       </p>
@@ -137,7 +144,7 @@ export default async function Terms() {
       </p>
       <p>Email: nitin.nazeer@gmail.com</p>
       <hr />
-      <p>Thank you for using SimpleClip!</p>
+      <p>Thank you for using Hanasu!</p>
     </div>
   );
 }
