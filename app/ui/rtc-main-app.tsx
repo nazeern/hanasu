@@ -65,8 +65,6 @@ export type Interval = {
 
 type ConnectionState = "connecting" | "connected" | "disconnected";
 
-let sessionStart: number = 0;
-
 export default function RTCMainApp({
   user,
   lang,
@@ -80,6 +78,7 @@ export default function RTCMainApp({
 }) {
   const initialized = useRef<boolean>(false);
   const prevDuration = useRef<number>(0);
+  const sessionStart = useRef<number>(0);
   const [connState, setConnState] = useState<ConnectionState>("connecting");
   useEffect(() => {
     if (!initialized.current) {
@@ -92,14 +91,13 @@ export default function RTCMainApp({
 
   const persistSession = useCallback(
     debounce(
-      (session: Session, chatMessages) => {
+      async (session: Session, chatMessages) => {
         updateSession(session, chatMessages);
         const delta = (session.duration - prevDuration.current) / 60;
-        stripeMeterEvent(user.id, delta).then((success) => {
-          if (success) {
-            prevDuration.current = session.duration;
-          }
-        });
+        const success = await stripeMeterEvent(user.id, delta);
+        if (success) {
+          prevDuration.current = session.duration;
+        }
       },
       2 * 1000,
       {
@@ -145,7 +143,7 @@ export default function RTCMainApp({
     }
     setSession((s) => ({
       ...s,
-      duration: Math.round((performance.now() - sessionStart) / 1000),
+      duration: Math.round((performance.now() - sessionStart.current) / 1000),
     }));
   }, [userResponseInterval, chatMessages]);
 
@@ -383,7 +381,7 @@ export default function RTCMainApp({
 
     // Store chosen topic
     setSession((s) => ({ ...s, id: sessionId, topic: topic }));
-    sessionStart = performance.now();
+    sessionStart.current = performance.now();
   }
 
   /** Update the token usage of the session. */

@@ -115,20 +115,22 @@ export async function removeOtherSubscriptions(customerId: string, keep: string)
 /* Send minutes transcribed to Stripe. Stripe accepts a maximum of 12 decimals. */
 export async function stripeMeterEvent(userId: string, value: number): Promise<boolean> {
     const { customerId, plan } = await getCurrentPlan(userId)
+    if (plan != Plan.USAGE) {
+        return true
+    }
     if (!customerId) { 
         console.log(`Failed to meter ${value} for user ${userId}`)
+        return false
     }
     // Only meter on usage plans
-    if (plan == Plan.USAGE) {
-        console.log(`Sending meter event of ${value}`)
-        await stripe.v2.billing.meterEvents.create({
-            event_name: 'hanasu_chat_minutes',
-            payload: {
-                stripe_customer_id: customerId,
-                value: round(value, 12).toString(),
-            },
-        });
-    }
+    console.log(`Sending meter event of ${value}`)
+    await stripe.v2.billing.meterEvents.create({
+        event_name: 'hanasu_chat_minutes',
+        payload: {
+            stripe_customer_id: customerId,
+            value: round(value, 12).toString(),
+        },
+    });
     return true
   }
 

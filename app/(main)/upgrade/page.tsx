@@ -27,8 +27,8 @@ export default async function UpgradePage({
   }
   return (
     <div className="w-full max-w-3xl flex md:flex-row flex-col gap-12 px-1">
-      <PlanCard plan={plan} userId={user?.id} />
       <AcceptPayment user={user} plan={plan} />
+      <PlanCard plan={plan} userId={user?.id} />
     </div>
   );
 }

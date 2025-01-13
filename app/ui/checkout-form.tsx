@@ -37,7 +37,7 @@ export default function CheckoutForm({
       <button
         type="submit"
         disabled={!stripe || loading}
-        className="mt-6 w-full justify-center items-center gap-x-3 flex text-onprimary px-1 py-2 rounded-lg bg-primary disabled:bg-blue-400 hover:bg-primaryhov"
+        className="my-6 w-full justify-center items-center gap-x-3 flex text-onprimary px-1 py-2 rounded-lg bg-primary disabled:bg-blue-400 hover:bg-primaryhov"
       >
         Submit Payment
         {loading ? (

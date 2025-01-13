@@ -25,10 +25,8 @@ export default async function ChatPage({
   const { plan } = await getCurrentPlan(user.id);
   const limit = planInfo[plan].limit;
   const sessions = await querySessions(user.id);
-  const totalConversationTime = sessions.reduce(
-    (acc, s) => acc + s.duration,
-    0
-  );
+  const totalConversationTime =
+    sessions.reduce((acc, s) => acc + s.duration, 0) / 60;
   const expense = await totalCost(sessions);
   const revenue = (await upcomingCost(user.id)) ?? 0;
 
