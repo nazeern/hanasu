@@ -109,7 +109,7 @@ export default async function SignupPage({
           </p>
         </form>
       </div>
-      <p className="text-xs text-gray-500 font-light mt-4">
+      <p className="text-xs text-gray-500 font-light mt-4 pb-12 px-1">
         By continuing, you agree to SimpleClip&apos;s{" "}
         <a className="underline" target="_blank" href="/terms">
           Terms of Service
