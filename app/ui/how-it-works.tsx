@@ -2,14 +2,12 @@ export default async function HowItWorksRow({
   index,
   title,
   subtitle,
-  imagePath,
-  alt,
+  videoPath,
 }: {
   index: number;
   title: string;
   subtitle: string;
-  imagePath?: string;
-  alt: string;
+  videoPath?: string;
 }) {
   return (
     <div className="w-full flex items-center justify-center flex-wrap my-12">
@@ -28,9 +26,16 @@ export default async function HowItWorksRow({
         {/* Subtitle */}
         <p className="text-lg md:ml-20 leading-loose">{subtitle}</p>
       </div>
-      {imagePath && (
-        <div className="flex grow items-center justify-center w-1/3 rounded-xl">
-          <img src={imagePath} alt={alt} className="rounded-3xl shadow-2xl" />
+      {videoPath && (
+        <div className="flex grow items-center justify-center w-1/3">
+          <video
+            className="rounded-xl shadow-2xl border-2 border-primary"
+            autoPlay
+            loop
+            muted
+          >
+            <source src={videoPath} type="video/mp4" />
+          </video>
         </div>
       )}
     </div>

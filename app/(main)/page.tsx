@@ -35,22 +35,19 @@ export default async function Landing() {
         index={1}
         title="CHOOSE A TOPIC"
         subtitle="Choose from a rotating set of conversation starters. Feeling creative? Write in a topic of your choice!"
-        // imagePath="PhoneImage.jpg"
-        alt="Choose a Topic"
+        videoPath="videos/hanasu-tutorial1.mp4"
       />
       <HowItWorksRow
         index={2}
         title="HAVE A CHAT"
         subtitle="Need help? Double tap the message to reveal, and again to automatically translate."
-        // imagePath="Example.jpg"
-        alt="Have a Chat"
+        videoPath="videos/hanasu-tutorial2.mp4"
       />
       <HowItWorksRow
         index={3}
         title="REVIEW"
         subtitle="Save unfamiliar words to your dictionary, and review them with science-backed spaced repetition."
-        // imagePath="Editor.jpg"
-        alt="Review"
+        videoPath="videos/hanasu-tutorial3.mp4"
       />
       <p className="text-4xl md:text-5xl mt-48 mb-12">
         What Our Users are Saying
