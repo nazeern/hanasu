@@ -1,3 +1,6 @@
+// How much does the spaced interval grow or shrink?
+export const VOCAB_DELAY_FACTOR = 0.75
+
 export type LangInfo = {
     lang: string;
     flag: string;

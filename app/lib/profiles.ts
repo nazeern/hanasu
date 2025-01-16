@@ -110,7 +110,7 @@ export async function updateProfile(profile: Tables<'profiles'>): Promise<boolea
         console.log(error)
         return false
     } else {
-        revalidatePath("/dashboard");
+        revalidatePath("/dashboard", 'page');
         return true
     }
 }

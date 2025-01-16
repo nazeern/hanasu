@@ -96,3 +96,7 @@ export function currencyString(value: number) {
 export function extractFilename(filename: string): string {
   return filename.slice(filename.indexOf("_") + 1)
 }
+
+export function bound(low: number = -Infinity, val: number, high: number = Infinity): number {
+  return Math.min(Math.max(low, val), high)
+}

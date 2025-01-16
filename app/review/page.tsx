@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ReviewApp from "@/app/ui/review";
-import { selectLowestScoreVocabulary } from "../lib/vocabulary";
+import { selectDueVocabulary, selectWarmupVocabulary } from "../lib/vocabulary";
 import { selectIdJa } from "../lib/ja_dict";
 import { selectProfile } from "../lib/profiles";
 
@@ -18,7 +18,15 @@ export default async function ReviewEntry() {
   if (!lang) {
     redirect("/dashboard");
   }
-  const vocab = await selectLowestScoreVocabulary(user.id);
+
+  // Get due vocab, or use warmup set
+  let vocab = await selectDueVocabulary(user.id);
+
+  let warmup;
+  if (!vocab) {
+    warmup = await selectWarmupVocabulary(user.id);
+    vocab = warmup[0];
+  }
   const entry = await selectIdJa(vocab?.word_id);
 
   return (
@@ -27,6 +35,7 @@ export default async function ReviewEntry() {
       lang={lang}
       loadedVocab={vocab}
       loadedEntry={entry}
+      loadedWarmup={warmup ?? []}
     />
   );
 }

@@ -55,23 +55,40 @@ export async function deleteVocabulary(userId: string, wordId: number): Promise<
     }
 }
 
-export async function selectLowestScoreVocabulary(userId: string, exclude: number = -1): Promise<Tables<'vocabulary'> | null> {
+export async function selectDueVocabulary(userId: string): Promise<Tables<'vocabulary'> | null> {
     if (!userId) { return null }
+
+    const now = new Date().toISOString()
+
     const supabase = await createClient()
-    const { data, error } = await supabase
+    const { data } = await supabase
         .from('vocabulary')
         .select('*')
         .eq('user_id', userId)
-        .neq('word_id', exclude)
-        .order('score')
+        .lt('due', now)
         .limit(1)
         .single()
-    if (!data) {
-        console.log(error)
-        return null
-    } else {
+    if (data) {
+        console.log("found due word")
         return data
     }
+
+    return null
+}
+
+export async function selectWarmupVocabulary(userId: string): Promise<Tables<'vocabulary'>[]> {
+    const supabase = await createClient()
+    const { data } = await supabase
+        .from('vocabulary')
+        .select('*')
+        .eq('user_id', userId)
+        .order('due', { ascending: true })
+        .limit(10)
+    if (data) {
+        console.log("fetch random words")
+        return data
+    }
+    return []
 }
 
 export async function updateVocabulary(record: Tables<'vocabulary'> | null): Promise<boolean> {

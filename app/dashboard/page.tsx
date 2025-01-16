@@ -1,6 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { selectLowestScoreVocabulary } from "@/app/lib/vocabulary";
+import {
+  selectDueVocabulary,
+  selectWarmupVocabulary,
+} from "@/app/lib/vocabulary";
 import { selectIdJa } from "@/app/lib/ja_dict";
 import DashboardPage from "@/app/ui/dashboard-page";
 import { selectProfile, updateProfile } from "@/app/lib/profiles";
@@ -33,7 +36,10 @@ export default async function Page({
     await updateProfile(profile);
     redirect("/onboard");
   }
-  const vocab = await selectLowestScoreVocabulary(user.id);
+  let vocab = await selectDueVocabulary(user.id);
+  if (!vocab) {
+    vocab = (await selectWarmupVocabulary(user.id))[0];
+  }
   const entry = await selectIdJa(vocab?.word_id);
 
   const message = (await searchParams).message;

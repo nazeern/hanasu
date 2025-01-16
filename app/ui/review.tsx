@@ -11,19 +11,21 @@ import ProfileIcon from "./profile-icon";
 import { User } from "@supabase/auth-js";
 import { Entry, selectIdJa } from "@/app/lib/ja_dict";
 import { Tables } from "@/database.types";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ArrowRightIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import {
-  selectLowestScoreVocabulary,
+  selectDueVocabulary,
+  selectWarmupVocabulary,
   updateVocabulary,
 } from "@/app/lib/vocabulary";
 import EntryTile from "./entry-tile";
 import ProgressBar from "./progress-bar";
 import { useRouter } from "next/navigation";
 import { LogoTitle } from "@/app/ui/logo";
-import { langInfo } from "@/app/lib/data";
+import { langInfo, VOCAB_DELAY_FACTOR } from "@/app/lib/data";
+import { sample } from "lodash";
+import { bound } from "../lib/utils";
 
-let start = performance.now();
 const NUM_QUESTIONS = 10;
 
 enum UserState {
@@ -39,16 +41,20 @@ export default function ReviewApp({
   lang,
   loadedVocab,
   loadedEntry,
+  loadedWarmup,
 }: {
   user: User;
   lang: string;
   loadedVocab: Tables<"vocabulary"> | null;
   loadedEntry: Entry | null;
+  loadedWarmup: Tables<"vocabulary">[];
 }) {
   const langName =
     langInfo.find((info) => info.lang == lang)?.name ?? "English";
 
   const router = useRouter();
+  const start = useRef<number>(performance.now());
+  const warmup = useRef<Tables<"vocabulary">[]>(loadedWarmup);
   const [userState, setUserState] = useState<UserState>(UserState.ANSWERING);
   const [vocab, setVocab] = useState<Tables<"vocabulary"> | null>(loadedVocab);
   const [entry, setEntry] = useState<Entry | null>(loadedEntry);
@@ -70,7 +76,7 @@ export default function ReviewApp({
           <ProfileIcon initial={user.user_metadata?.name[0]} />
         </div>
         <p className="pt-12 font-bold text-2xl text-center">
-          Seems like your dictionary is empty!
+          Seems like you have no words to review!
         </p>
         <p className="font-light italic mb-2 text-center">
           Start a conversation and save words you&apos;d like to review!
@@ -179,17 +185,11 @@ export default function ReviewApp({
 
     // Already answered, next word
     if ([UserState.CORRECT, UserState.INCORRECT].includes(userState)) {
-      setUserState(UserState.LOADING);
-      setResponse("");
-      const nextVocab = await selectLowestScoreVocabulary(user.id, entry.id);
-      const nextEntry = await selectIdJa(nextVocab?.word_id);
-      setVocab(nextVocab);
-      setEntry(nextEntry);
-      setUserState(UserState.ANSWERING);
-      start = performance.now();
+      await getNextVocab();
       return;
     }
 
+    // Answering this word
     const correct = entry.readings.includes(response);
     if (correct) {
       setUserState(UserState.CORRECT);
@@ -200,26 +200,73 @@ export default function ReviewApp({
       setUserState(UserState.FINISHED);
     }
     setQuestionNumber((qn) => qn + 1);
-    const timeToResponse = performance.now() - start;
-    const n = vocab.n_correct + vocab.n_wrong + 1;
 
-    // Update score
+    // Apply updates to vocab
+    const updated = calculateUpdatedVocab(vocab, correct);
+
+    await updateVocabulary(updated);
+  }
+
+  /** Fetch next due vocab, or fetch warmup set and sample. */
+  async function getNextVocab() {
+    setUserState(UserState.LOADING);
+    setResponse("");
+    let nextVocab = await selectDueVocabulary(user.id);
+    if (!nextVocab) {
+      if (!warmup.current.length) {
+        warmup.current = await selectWarmupVocabulary(user.id);
+      }
+      nextVocab = sample(warmup.current) ?? null;
+    }
+
+    const nextEntry = await selectIdJa(nextVocab?.word_id);
+    setVocab(nextVocab);
+    setEntry(nextEntry);
+    setUserState(UserState.ANSWERING);
+    start.current = performance.now();
+    return;
+  }
+
+  /** Based on whether the answer was correct, calculate an updated vocab object. */
+  function calculateUpdatedVocab(
+    vocab: Tables<"vocabulary">,
+    correct: boolean
+  ) {
+    const now = new Date();
+    const due = new Date(vocab.due);
+    const wasDue = now > due;
+
+    const timeToResponse = performance.now() - start.current;
+    const n = vocab.n_correct + vocab.n_wrong + 1;
+    const newTimeToResponse = Math.round(
+      bound(
+        0,
+        ((n - 1) / n) * vocab.time_to_response_ms + (1 / n) * timeToResponse,
+        32767
+      )
+    );
+
     const updated = {
       ...vocab,
       n_correct: vocab.n_correct + +correct,
       n_wrong: vocab.n_wrong + +!correct,
-      time_to_response_ms: Math.min(
-        Math.round(
-          ((n - 1) / n) * vocab.time_to_response_ms + (1 / n) * timeToResponse
-        ),
-        32767
-      ),
+      time_to_response_ms: newTimeToResponse,
       streak: correct ? vocab.streak + 1 : 0,
     };
-    updated.score =
-      updated.n_correct / n +
-      1000 / updated.time_to_response_ms +
-      Math.min(updated.streak, 2);
-    await updateVocabulary(updated);
+
+    // If word is due, calculate new delay & due date
+    // Delay increases or decreases by the VOCAB_DELAY_FACTOR
+    if (wasDue) {
+      const newDelay = Math.round(
+        bound(1, vocab.delay * (1 + +correct * VOCAB_DELAY_FACTOR), 32767)
+      );
+      const nextDue = new Date();
+      nextDue.setMinutes(nextDue.getMinutes() + newDelay);
+
+      updated.due = nextDue.toISOString();
+      updated.delay = newDelay;
+    }
+
+    return updated;
   }
 }

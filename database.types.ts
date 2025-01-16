@@ -113,10 +113,11 @@ export type Database = {
       vocabulary: {
         Row: {
           created_at: string
+          delay: number
+          due: string
           id: string
           n_correct: number
           n_wrong: number
-          score: number
           streak: number
           time_to_response_ms: number
           user_id: string
@@ -124,10 +125,11 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          delay?: number
+          due?: string
           id?: string
           n_correct?: number
           n_wrong?: number
-          score?: number
           streak?: number
           time_to_response_ms?: number
           user_id: string
@@ -135,10 +137,11 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          delay?: number
+          due?: string
           id?: string
           n_correct?: number
           n_wrong?: number
-          score?: number
           streak?: number
           time_to_response_ms?: number
           user_id?: string
