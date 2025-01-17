@@ -4,27 +4,9 @@ import { createClient } from "@/utils/supabase/server"
 import kuromoji from "kuromoji";
 import { Interval } from "@/app/ui/rtc-main-app";
 import path from "path";
+import { Entry } from "@/app/lib/data";
 
 const featureRanking = ['ichi1', 'news1', 'spec1', 'ichi2', 'news2', 'spec2']
-
-export type Definition = {
-    parts_of_speech: string[]
-    tags: string[]
-    meanings: string[]
-    see_also: string
-
-    example_ja: string
-    example_en: string
-}
-
-export type Entry = {
-    definitions: Definition[];
-    featured: string[];
-    id: number;
-    readings: string[];
-    word: string;
-    saved?: boolean;
-}
 
 /** Positive if a > b, negative if b > a, else 0 */
 function compareEntries(a: Entry, b: Entry, word: string): number {
@@ -90,7 +72,7 @@ export async function selectJa(sentence: string, tap: number): Promise<[Entry[] 
     }
 }
 
-export async function selectIdJa(wordId?: number): Promise<Entry | null> {
+export async function idSelectJa(wordId?: number): Promise<Entry | null> {
     if (!wordId) { return null }
     const supabase = await createClient()
     const { data, error } = await supabase

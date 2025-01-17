@@ -5,13 +5,12 @@ import { cn } from "@/app/lib/utils";
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { romanizeText, translateText } from "@/app/lib/chat";
 import { User } from "@supabase/auth-js";
-import { selectJa } from "@/app/lib/ja_dict";
 import { PopupWrapper } from "@/app/ui/popup-wrapper";
 import DictionaryModal, {
   DictionaryModalData,
 } from "@/app/ui/dictionary-modal";
 import { selectVocabulary } from "@/app/lib/vocabulary";
-import { langInfo } from "@/app/lib/data";
+import { langInfo, selectDict } from "@/app/lib/data";
 
 let timeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -60,6 +59,7 @@ export default function ChatMessage({
             word={modal.word}
             entries={modal.entries}
             setModal={setModal}
+            lang={lang}
           />
         </PopupWrapper>
       )}
@@ -104,11 +104,12 @@ export default function ChatMessage({
     if (tap == undefined) {
       return;
     }
-    const [entries, parsed] = await selectJa(message.content, tap);
+    const [entries, parsed] = await selectDict(lang, message.content, tap);
+    console.log(entries, parsed);
 
     // Check which entries users already saved
     const wordIds = entries?.map((e) => e.id) ?? [];
-    const vocab = await selectVocabulary(user.id, wordIds);
+    const vocab = await selectVocabulary(user.id, wordIds, lang);
     const savedIds = vocab.map((v) => v.word_id);
     entries?.forEach((e) => {
       if (savedIds.includes(e.id)) {

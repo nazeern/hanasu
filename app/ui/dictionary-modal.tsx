@@ -1,6 +1,6 @@
 "use client";
 
-import { Entry } from "@/app/lib/ja_dict";
+import { Entry } from "@/app/lib/data";
 import DictionaryRow from "./dictionary-row";
 import { User } from "@supabase/auth-js";
 import { Dispatch, SetStateAction } from "react";
@@ -27,7 +27,8 @@ function renderWord(word: string | null) {
 function renderEntries(
   user: User,
   entries: Entry[] | null,
-  setModal: Dispatch<SetStateAction<DictionaryModalData | null>>
+  setModal: Dispatch<SetStateAction<DictionaryModalData | null>>,
+  lang: string
 ) {
   if (entries?.length) {
     return entries.map((entry) => (
@@ -36,6 +37,7 @@ function renderEntries(
         user={user}
         entry={entry}
         setModal={setModal}
+        lang={lang}
       />
     ));
   } else {
@@ -61,11 +63,13 @@ export default function DictionaryModal({
   word,
   entries,
   setModal,
+  lang,
 }: {
   user: User;
   word: string | null;
   entries: Entry[] | null;
   setModal: Dispatch<SetStateAction<DictionaryModalData | null>>;
+  lang: string;
 }) {
   return (
     <div
@@ -73,7 +77,7 @@ export default function DictionaryModal({
       className="w-screen max-h-96 shadow-2xl rounded-b-3xl bg-white flex flex-col items-center gap-4 p-4 divide-y overflow-y-scroll"
     >
       {renderWord(word)}
-      {renderEntries(user, entries, setModal)}
+      {renderEntries(user, entries, setModal, lang)}
     </div>
   );
 }

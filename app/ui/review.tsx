@@ -9,7 +9,7 @@ import { BlurTop, BlurBottom } from "@/app/ui/blur";
 import IconButton from "./icon-button";
 import ProfileIcon from "./profile-icon";
 import { User } from "@supabase/auth-js";
-import { Entry, selectIdJa } from "@/app/lib/ja_dict";
+import { Entry, idSelectDict } from "@/app/lib/data";
 import { Tables } from "@/database.types";
 import React, { useRef, useState } from "react";
 import { ArrowRightIcon, SparklesIcon } from "@heroicons/react/24/solid";
@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation";
 import { LogoTitle } from "@/app/ui/logo";
 import { langInfo, VOCAB_DELAY_FACTOR } from "@/app/lib/data";
 import { sample } from "lodash";
-import { bound } from "../lib/utils";
+import { bound } from "@/app/lib/utils";
 
 const NUM_QUESTIONS = 10;
 
@@ -139,7 +139,7 @@ export default function ReviewApp({
           <div className="bg-slate-400/50 my-2 h-4 w-full rounded-full animate-pulse" />
         </div>
       ) : (
-        <EntryTile user={user} entry={entry} />
+        <EntryTile user={user} entry={entry} lang={lang} />
       )}
       <form
         className="mt-10 w-5/6 flex items-center gap-1"
@@ -190,7 +190,7 @@ export default function ReviewApp({
     }
 
     // Answering this word
-    const correct = entry.readings.includes(response);
+    const correct = entry.readings.includes(response) || entry.word == response;
     if (correct) {
       setUserState(UserState.CORRECT);
     } else {
@@ -211,15 +211,15 @@ export default function ReviewApp({
   async function getNextVocab() {
     setUserState(UserState.LOADING);
     setResponse("");
-    let nextVocab = await selectDueVocabulary(user.id);
+    let nextVocab = await selectDueVocabulary(user.id, lang);
     if (!nextVocab) {
       if (!warmup.current.length) {
-        warmup.current = await selectWarmupVocabulary(user.id);
+        warmup.current = await selectWarmupVocabulary(user.id, lang);
       }
       nextVocab = sample(warmup.current) ?? null;
     }
 
-    const nextEntry = await selectIdJa(nextVocab?.word_id);
+    const nextEntry = await idSelectDict(lang, nextVocab?.word_id);
     setVocab(nextVocab);
     setEntry(nextEntry);
     setUserState(UserState.ANSWERING);

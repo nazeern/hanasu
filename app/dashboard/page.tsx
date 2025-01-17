@@ -4,9 +4,9 @@ import {
   selectDueVocabulary,
   selectWarmupVocabulary,
 } from "@/app/lib/vocabulary";
-import { selectIdJa } from "@/app/lib/ja_dict";
 import DashboardPage from "@/app/ui/dashboard-page";
 import { selectProfile, updateProfile } from "@/app/lib/profiles";
+import { idSelectDict } from "@/app/lib/data";
 
 enum Experience {
   ONBOARD = "onboard",
@@ -36,11 +36,11 @@ export default async function Page({
     await updateProfile(profile);
     redirect("/onboard");
   }
-  let vocab = await selectDueVocabulary(user.id);
+  let vocab = await selectDueVocabulary(user.id, profile.lang);
   if (!vocab) {
-    vocab = (await selectWarmupVocabulary(user.id))[0];
+    vocab = (await selectWarmupVocabulary(user.id, profile.lang))[0];
   }
-  const entry = await selectIdJa(vocab?.word_id);
+  const entry = await idSelectDict(profile.lang, vocab?.word_id);
 
   const message = (await searchParams).message;
 
@@ -50,6 +50,7 @@ export default async function Page({
       profile={profile}
       entry={entry}
       message={message}
+      lang={profile.lang}
     />
   );
 }

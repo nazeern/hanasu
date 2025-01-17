@@ -1,6 +1,6 @@
 "use client";
 
-import { Entry } from "@/app/lib/ja_dict";
+import { Entry } from "@/app/lib/data";
 import IconButton from "./icon-button";
 import { deleteVocabulary, insertVocabulary } from "@/app/lib/vocabulary";
 import { User } from "@supabase/auth-js";
@@ -24,10 +24,12 @@ export default function DictionaryRow({
   user,
   entry,
   setModal,
+  lang,
 }: {
   user: User;
   entry: Entry;
   setModal: Dispatch<SetStateAction<DictionaryModalData | null>>;
+  lang: string;
 }) {
   return (
     <div className="relative w-full flex py-1 gap-6">
@@ -92,9 +94,9 @@ export default function DictionaryRow({
     setSaved(!entry.saved);
     let success = false;
     if (wasSaved) {
-      success = await deleteVocabulary(user.id, entry.id);
+      success = await deleteVocabulary(user.id, entry.id, lang);
     } else {
-      success = await insertVocabulary(user.id, entry.id);
+      success = await insertVocabulary(user.id, entry.id, lang);
     }
     if (!success) {
       setSaved(wasSaved);

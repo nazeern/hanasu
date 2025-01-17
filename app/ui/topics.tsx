@@ -3,7 +3,7 @@
 import IconButton from "@/app/ui/icon-button";
 import Divider from "@/app/ui/divider";
 import { BookOpenIcon } from "@heroicons/react/24/solid";
-import { Entry } from "@/app/lib/ja_dict";
+import { Entry } from "@/app/lib/data";
 import EntryTile from "@/app/ui/entry-tile";
 import { User } from "@supabase/auth-js";
 
@@ -11,10 +11,12 @@ export default function Topics({
   user,
   topics,
   entry,
+  lang,
 }: {
   user: User;
   topics: string[];
   entry: Entry | null;
+  lang: string;
 }) {
   return (
     <div className="grow flex flex-col gap-8 items-center justify-center pt-12 pb-48 px-4">
@@ -34,7 +36,12 @@ export default function Topics({
       {entry && (
         <>
           <Divider />
-          <EntryTile user={user} entry={entry} includeDefinitions={false} />
+          <EntryTile
+            user={user}
+            entry={entry}
+            includeDefinitions={false}
+            lang={lang}
+          />
           <IconButton
             icon={BookOpenIcon}
             text="Review your Vocabulary"

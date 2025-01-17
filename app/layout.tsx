@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
-import "@livekit/components-styles";
 
 const lato = Lato({ weight: ["400", "700"], subsets: ["latin"] });
 

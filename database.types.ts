@@ -116,6 +116,7 @@ export type Database = {
           delay: number
           due: string
           id: string
+          lang: string
           n_correct: number
           n_wrong: number
           streak: number
@@ -128,6 +129,7 @@ export type Database = {
           delay?: number
           due?: string
           id?: string
+          lang?: string
           n_correct?: number
           n_wrong?: number
           streak?: number
@@ -140,6 +142,7 @@ export type Database = {
           delay?: number
           due?: string
           id?: string
+          lang?: string
           n_correct?: number
           n_wrong?: number
           streak?: number
@@ -163,6 +166,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      "zh-CN_dict": {
+        Row: {
+          definition: string
+          id: number
+          pinyin: string
+          word: string
+        }
+        Insert: {
+          definition: string
+          id?: number
+          pinyin: string
+          word: string
+        }
+        Update: {
+          definition?: string
+          id?: number
+          pinyin?: string
+          word?: string
+        }
+        Relationships: []
       }
     }
     Views: {

@@ -1,3 +1,7 @@
+import { idSelectJa, selectJa } from "@/app/lib/ja_dict";
+import { Interval } from "@/app/ui/rtc-main-app";
+import { idSelectZh, selectZh } from "@/app/lib/zh-CN_dict";
+
 // How much does the spaced interval grow or shrink?
 export const VOCAB_DELAY_FACTOR = 0.75
 
@@ -26,6 +30,7 @@ export const langInfo: LangInfo[] = [
     lang: "zh-CN",
     flag: "🇨🇳",
     name: "Chinese",
+    supportsDict: true,
   },
   {
     lang: "es",
@@ -128,4 +133,45 @@ export const planInfo: { [plan: string]: PlanInfo } = {
     priceId: process.env.MONTHLY_PLAN_PRICE_ID ?? "",
     limit: 1000
   },
+}
+
+export type Definition = {
+    parts_of_speech: string[]
+    tags: string[]
+    meanings: string[]
+    see_also: string
+
+    example_ja: string
+    example_en: string
+}
+
+export type Entry = {
+    definitions: Definition[];
+    featured: string[];
+    id: number;
+    readings: string[];
+    word: string;
+    saved?: boolean;
+}
+
+export async function selectDict(lang: string, content: string, tap: number): Promise<[Entry[] | null, Interval | null]> {
+  switch (lang) {
+    case "ja":
+      return await selectJa(content, tap)
+    case "zh-CN":
+      return await selectZh(content, tap)
+    default:
+      return [null, null]
+  }
+}
+
+export async function idSelectDict(lang: string, wordId?: number): Promise<Entry | null> {
+  switch (lang) {
+    case "ja":
+      return await idSelectJa(wordId)
+    case "zh-CN":
+      return await idSelectZh(wordId)
+    default:
+      return null
+  }
 }

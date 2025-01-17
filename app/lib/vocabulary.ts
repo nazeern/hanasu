@@ -3,7 +3,7 @@
 import { Tables } from "@/database.types"
 import { createClient } from "@/utils/supabase/server"
 
-export async function selectVocabulary(userId: string, wordIds: number[]): Promise<Tables<'vocabulary'>[]> {
+export async function selectVocabulary(userId: string, wordIds: number[], lang: string): Promise<Tables<'vocabulary'>[]> {
     if (!userId || !wordIds.length) {
         return []
     }
@@ -12,6 +12,7 @@ export async function selectVocabulary(userId: string, wordIds: number[]): Promi
         .from('vocabulary')
         .select('*')
         .eq('user_id', userId)
+        .eq('lang', lang)
         .in('word_id', wordIds)
     if (error) {
         console.log(error)
@@ -21,14 +22,14 @@ export async function selectVocabulary(userId: string, wordIds: number[]): Promi
     }
 }
 
-export async function insertVocabulary(userId: string, wordId: number): Promise<boolean> {
+export async function insertVocabulary(userId: string, wordId: number, lang: string): Promise<boolean> {
     if (!userId || !wordId) {
         return false
     }
     const supabase = await createClient()
     const { error } = await supabase
         .from('vocabulary')
-        .insert([{user_id: userId, word_id: wordId}])
+        .insert([{user_id: userId, word_id: wordId, lang: lang}])
     if (error) {
         console.log(error)
         return false
@@ -37,7 +38,7 @@ export async function insertVocabulary(userId: string, wordId: number): Promise<
     }
 }
 
-export async function deleteVocabulary(userId: string, wordId: number): Promise<boolean> {
+export async function deleteVocabulary(userId: string, wordId: number, lang: string): Promise<boolean> {
     if (!userId || !wordId) {
         return false
     }
@@ -47,6 +48,7 @@ export async function deleteVocabulary(userId: string, wordId: number): Promise<
         .delete()
         .eq('user_id', userId)
         .eq('word_id', wordId)
+        .eq('lang', lang)
     if (error) {
         console.log(error)
         return false
@@ -55,7 +57,7 @@ export async function deleteVocabulary(userId: string, wordId: number): Promise<
     }
 }
 
-export async function selectDueVocabulary(userId: string): Promise<Tables<'vocabulary'> | null> {
+export async function selectDueVocabulary(userId: string, lang: string): Promise<Tables<'vocabulary'> | null> {
     if (!userId) { return null }
 
     const now = new Date().toISOString()
@@ -65,6 +67,7 @@ export async function selectDueVocabulary(userId: string): Promise<Tables<'vocab
         .from('vocabulary')
         .select('*')
         .eq('user_id', userId)
+        .eq('lang', lang)
         .lt('due', now)
         .limit(1)
         .single()
@@ -76,12 +79,13 @@ export async function selectDueVocabulary(userId: string): Promise<Tables<'vocab
     return null
 }
 
-export async function selectWarmupVocabulary(userId: string): Promise<Tables<'vocabulary'>[]> {
+export async function selectWarmupVocabulary(userId: string, lang: string): Promise<Tables<'vocabulary'>[]> {
     const supabase = await createClient()
     const { data } = await supabase
         .from('vocabulary')
         .select('*')
         .eq('user_id', userId)
+        .eq('lang', lang)
         .order('due', { ascending: true })
         .limit(10)
     if (data) {

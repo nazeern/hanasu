@@ -4,7 +4,7 @@ import { BlurBottom, BlurTop } from "@/app/ui/blur";
 import { User } from "@supabase/auth-js";
 import ProfileIcon from "./profile-icon";
 import Topics from "@/app/ui/topics";
-import { Entry } from "@/app/lib/ja_dict";
+import { Entry } from "@/app/lib/data";
 import { LogoTitle } from "./logo";
 import LangSelect from "@/app/ui/lang-select";
 import { Tables } from "@/database.types";
@@ -23,11 +23,13 @@ export default function DashboardPage({
   profile,
   entry,
   message,
+  lang,
 }: {
   user: User;
   profile: Tables<"profiles">;
   entry: Entry | null;
   message?: string;
+  lang: string;
 }) {
   const [msg, setMsg] = useState<string>(message ?? "");
 
@@ -48,7 +50,7 @@ export default function DashboardPage({
           className="mx-auto px-2 py-1 rounded-lg bg-primarybg text-primary border border-primary"
         />
       )}
-      <Topics user={user} topics={topics} entry={entry} />
+      <Topics user={user} topics={topics} entry={entry} lang={lang} />
     </div>
   );
 }

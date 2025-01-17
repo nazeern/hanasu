@@ -108,6 +108,7 @@ export async function querySessions(userId: string): Promise<Session[]> {
         .select('*')
         .eq('user_id', userId)
         .gte('created_at', firstDayOfMonth.toISOString())
+        .order('created_at', { ascending: false })
 
     if (!data) {
         console.log(error)

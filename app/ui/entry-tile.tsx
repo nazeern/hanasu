@@ -1,6 +1,6 @@
 "use client";
 
-import { Entry } from "@/app/lib/ja_dict";
+import { Entry } from "@/app/lib/data";
 import { featureDisplay } from "@/app/ui/dictionary-row";
 import { User } from "@supabase/auth-js";
 import IconButton from "./icon-button";
@@ -12,10 +12,12 @@ export default function EntryTile({
   user,
   entry,
   includeDefinitions = true,
+  lang,
 }: {
   user: User;
   entry: Entry;
   includeDefinitions?: boolean;
+  lang: string;
 }) {
   const [saved, setSaved] = useState<boolean>(true);
   return (
@@ -82,9 +84,9 @@ export default function EntryTile({
     setSaved(!saved);
     let success = false;
     if (wasSaved) {
-      success = await deleteVocabulary(user.id, entry.id);
+      success = await deleteVocabulary(user.id, entry.id, lang);
     } else {
-      success = await insertVocabulary(user.id, entry.id);
+      success = await insertVocabulary(user.id, entry.id, lang);
     }
     if (!success) {
       setSaved(wasSaved);
