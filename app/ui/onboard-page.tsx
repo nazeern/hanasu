@@ -59,6 +59,7 @@ export default function OnboardPage({
         autoPlay
         loop
         muted
+        playsInline
       >
         <source src={info.src} type="video/mp4" />
         This browser does not support the video player.
@@ -74,7 +75,6 @@ export default function OnboardPage({
         )}
         <IconButton
           text={page == end ? "Done" : "Next"}
-          href={page == end ? "/dashboard" : undefined}
           onClick={nextPage}
           className="absolute right-4 px-4 py-1 bg-primary text-onprimary rounded-full font-bold"
         />
@@ -83,7 +83,11 @@ export default function OnboardPage({
   );
 
   function nextPage() {
-    setPage((p) => p + 1);
+    if (page == end) {
+      window.location.href = "/dashboard";
+    } else {
+      setPage((p) => p + 1);
+    }
   }
 
   function prevPage() {

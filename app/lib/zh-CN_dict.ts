@@ -22,7 +22,7 @@ export async function selectZh(sentence: string, tap: number): Promise<[Entry[] 
         }
         start = end
     }
-    if (!parsed.start || !parsed.end) { return [null, null] }
+    if (parsed.start == undefined || !parsed.end == undefined) { return [null, null] }
     const token = sentence.slice(parsed.start, parsed.end)
 
     const supabase = await createClient()

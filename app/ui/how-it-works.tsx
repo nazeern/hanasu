@@ -33,6 +33,7 @@ export default async function HowItWorksRow({
             autoPlay
             loop
             muted
+            playsInline
           >
             <source src={videoPath} type="video/mp4" />
           </video>

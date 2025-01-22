@@ -27,10 +27,6 @@ export default async function Landing() {
         Learn language through natural conversation topics
       </p>
       <CTA />
-      {/* <video className="w-full h-auto" autoPlay loop muted playsInline>
-        Your browser does not support the video tag.
-      </video> */}
-      {/* How It Works */}
       <HowItWorksRow
         index={1}
         title="CHOOSE A TOPIC"
