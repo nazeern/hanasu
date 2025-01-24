@@ -26,7 +26,7 @@ export default function MainApp({
   );
 
   return (
-    <div className="flex flex-col h-dvh w-screen px-1 py-2">
+    <div className="w-full max-w-3xl mx-auto flex flex-col h-dvh px-1 py-2 border-x border-gray-400">
       <BlurTop />
       <BlurBottom />
       <div className="flex items-center justify-between px-2 py-2">

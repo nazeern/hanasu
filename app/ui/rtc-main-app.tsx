@@ -148,7 +148,7 @@ export default function RTCMainApp({
   }, [userResponseInterval, chatMessages]);
 
   return (
-    <div className="flex flex-col h-dvh w-screen px-1 py-2">
+    <div className="w-full max-w-3xl mx-auto flex flex-col h-dvh px-1 py-2 border-x border-gray-400">
       <BlurTop />
       <BlurBottom />
       <audio ref={audioRef} autoPlay={true}></audio>
