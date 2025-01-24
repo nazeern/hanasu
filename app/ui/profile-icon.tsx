@@ -42,7 +42,7 @@ export default function ProfileIcon({
           href={`/sign-up?${signupSearchParams.toString()}`}
           className="text-sm font-semibold leading-6 bg-primary text-onprimary py-1 px-2 rounded-lg hover:bg-primary hover:border-blue-400"
         >
-          Sign up
+          Try Free
         </Link>
       </div>
     );
