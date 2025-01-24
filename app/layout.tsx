@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
+import { Analytics } from "@vercel/analytics/next";
 
 const lato = Lato({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body>
         <NextTopLoader color="#0345fc" height={6} />
         {children}
+        <Analytics />
       </body>
     </html>
   );
