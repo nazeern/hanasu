@@ -102,7 +102,7 @@ export async function mintEphemeralToken() {
       input_audio_transcription: {
         model: "whisper-1",
       },
-      max_response_output_tokens: 200,
+      max_response_output_tokens: 300,
     }),
   })
   const data = await r.json()
