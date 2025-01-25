@@ -54,6 +54,11 @@ export const langInfo: LangInfo[] = [
     canRomanize: true,
   },
   {
+    lang: "th",
+    flag: "🇹🇭",
+    name: "Thai",
+  },
+  {
     lang: "ru",
     flag: "🇷🇺",
     name: "Russian",
