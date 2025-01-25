@@ -74,7 +74,7 @@ export default function DictionaryModal({
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="w-screen max-h-96 shadow-2xl rounded-b-3xl bg-white flex flex-col items-center gap-4 p-4 divide-y overflow-y-scroll"
+      className="w-screen max-h-96 shadow-2xl rounded-b-3xl bg-white flex flex-col items-center gap-4 p-4 divide-y overflow-y-scroll text-black"
     >
       {renderWord(word)}
       {renderEntries(user, entries, setModal, lang)}
