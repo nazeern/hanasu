@@ -18,28 +18,28 @@ const faqs = [
       Nowadays, there are tons of free resources, but the hardest part is actually immersing and exercising what you've learned.\
       Hanasu takes care of this for you!",
   },
-  {
-    question: "Is Hanasu free?",
-    answer:
-      "If you're new, you can get started at no cost! \
-      Running cutting-edge AI models is expensive, but you should be confident before you buy. \
-      (I'll never ask for credit cards for free trials.",
-  },
+  // {
+  //   question: "Is Hanasu free?",
+  //   answer:
+  //     "If you're new, you can get started at no cost! \
+  //     Running cutting-edge AI models is expensive, but you should be confident before you buy. \
+  //     (I'll never ask for credit cards for free trials.",
+  // },
   {
     question: "Do I have to install anything?",
     answer:
       "Nope! Hanasu runs entirely within your browser, and autosaves to your account. Work from any device, and from mobile!",
   },
-  {
-    question: "How does pricing work?",
-    answer:
-      "Aside from the free trial, we offer three pricing options: (1) Pay as You Go, (2) Monthly, and (3) Yearly. \
-      Pay as You Go is generally $0.10 for a minute of conversation, and is our most popular option.",
-  },
-  {
-    question: "What is the cancellation policy?",
-    answer: "Cancel anytime!",
-  },
+  // {
+  //   question: "How does pricing work?",
+  //   answer:
+  //     "Aside from the free trial, we offer three pricing options: (1) Pay as You Go, (2) Monthly, and (3) Yearly. \
+  //     Pay as You Go is generally $0.10 for a minute of conversation, and is our most popular option.",
+  // },
+  // {
+  //   question: "What is the cancellation policy?",
+  //   answer: "Cancel anytime!",
+  // },
 ];
 
 export default function FAQ() {

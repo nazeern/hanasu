@@ -13,12 +13,12 @@ export default async function CTA() {
         >
           Try for free &rarr;
         </Link>
-        <Link
+        {/* <Link
           href="/pricing"
           className="rounded-lg py-2 px-4 bg-gray-300 text-center hover:border hover:border-primarybg hover:bg-gray-300/50 hover:-translate-y-1 duration-300"
         >
           See Pricing
-        </Link>
+        </Link> */}
       </div>
       <div className="flex flex-col gap-y-1 mb-24">
         {bullets.map((bullet, index) => {

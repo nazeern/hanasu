@@ -1,6 +1,6 @@
 import QuoteMark from "../icons/quote-icon";
 import {
-  BanknotesIcon,
+  // BanknotesIcon,
   ClockIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
@@ -18,17 +18,17 @@ const testimonials = [
     quote:
       "I used Duolingo daily for months and still struggled to speak naturally. I've only used Hanasu for a week, and finally feel like I can actually talk with real people.",
   },
-  {
-    icon: BanknotesIcon,
-    header: "Reasonably Priced",
-    quote:
-      "I used to pay hundreds for language courses & tutors - now I pay a fraction of that cost!",
-  },
+  // {
+  //   icon: BanknotesIcon,
+  //   header: "Reasonably Priced",
+  //   quote:
+  //     "I used to pay hundreds for language courses & tutors - now I pay a fraction of that cost!",
+  // },
 ];
 
 export default async function Testimonials() {
   return (
-    <div className="grid md:grid-cols-3 gap-12">
+    <div className="grid md:grid-cols-2 gap-12">
       {testimonials.map((testimonial, index) => (
         <div key={index}>
           <div className="flex items-center justify-center gap-x-2 mb-1 text-gray-700">

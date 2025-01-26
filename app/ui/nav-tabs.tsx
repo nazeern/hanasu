@@ -8,6 +8,7 @@ export default function NavTabs() {
 
   // Not on editor
   if (!pathname.startsWith("/dashboard")) {
+    return null; // temporary for sharing resource without being annoying
     return (
       <Link
         href="/pricing"
