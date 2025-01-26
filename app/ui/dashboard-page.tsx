@@ -15,7 +15,7 @@ import { XCircleIcon } from "@heroicons/react/24/outline";
 const topics = [
   "What is your favorite food?",
   "Do you have any hobbies?",
-  "Tell me about your day.",
+  "What did you do today?",
 ];
 
 export default function DashboardPage({
