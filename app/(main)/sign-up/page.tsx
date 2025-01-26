@@ -35,7 +35,7 @@ export default async function SignupPage({
         <p className="text-2xl font-bold mb-6">Create an account</p>
         {/* Sign in with Google */}
         <div className="flex justify-center">
-          <GoogleButton next="/pricing" />
+          <GoogleButton next="/dashboard" />
         </div>
         {/* Divider */}
         <div className="flex items-center justify-center my-6">

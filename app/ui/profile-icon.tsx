@@ -70,7 +70,7 @@ export default function ProfileIcon({
         )}
         <Link
           onClick={() => setIsLoading(true)}
-          href="/account"
+          href="/account/usage"
           className="flex justify-center items-center border border-primary bg-blue-100 rounded-full size-10
             text-primary hover:border-complement"
         >
