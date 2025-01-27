@@ -2,10 +2,14 @@
 
 import { login } from "@/app/lib/actions";
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 export default function LoginForm({ sitekey }: { sitekey: string }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const captcha = useRef<HCaptcha | null>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
