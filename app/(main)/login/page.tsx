@@ -18,8 +18,11 @@ export default async function LoginPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (user || !process.env.CAPTCHA_SITEKEY) {
+  if (user) {
     redirect("/dashboard");
+  }
+  if (!process.env.CAPTCHA_SITEKEY) {
+    redirect("/");
   }
   const params = await searchParams;
   const success = params?.success ? decodeURIComponent(params?.success) : null;

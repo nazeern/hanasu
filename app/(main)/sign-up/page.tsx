@@ -16,8 +16,11 @@ export default async function SignupPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (user || !process.env.CAPTCHA_SITEKEY) {
+  if (user) {
     redirect("/dashboard");
+  }
+  if (!process.env.CAPTCHA_SITEKEY) {
+    redirect("/");
   }
   const params = await searchParams;
   const error = params?.error ? decodeURIComponent(params?.error) : null;
