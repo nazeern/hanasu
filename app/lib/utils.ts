@@ -100,3 +100,7 @@ export function extractFilename(filename: string): string {
 export function bound(low: number = -Infinity, val: number, high: number = Infinity): number {
   return Math.min(Math.max(low, val), high)
 }
+
+export function sentenceCase(val: string): string {
+  return val.charAt(0).toUpperCase() + val.slice(1)
+}

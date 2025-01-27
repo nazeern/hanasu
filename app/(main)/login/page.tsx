@@ -1,11 +1,9 @@
-import { login } from "@/app/lib/actions";
-import Link from "next/link";
 import { LogoTitle } from "@/app/ui/logo";
 import Toast from "@/app/ui/toast";
-import FormButton from "@/app/ui/form-button";
 import GoogleButton from "@/app/ui/google-button";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import LoginForm from "@/app/ui/login-form";
 
 export default async function LoginPage({
   searchParams,
@@ -20,14 +18,13 @@ export default async function LoginPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (user) {
+  if (user || !process.env.CAPTCHA_SITEKEY) {
     redirect("/dashboard");
   }
   const params = await searchParams;
   const success = params?.success ? decodeURIComponent(params?.success) : null;
   const error = params?.error ? decodeURIComponent(params?.error) : null;
   const toastStyle = success ? "success" : "error";
-  const redirectTo = params?.redirectTo ?? "";
 
   return (
     <>
@@ -47,46 +44,7 @@ export default async function LoginPage({
           <span className="px-4 text-gray-500">or</span>
           <hr className="w-full border-t border-gray-300" />
         </div>
-        <form className="flex flex-col gap-y-2">
-          <label htmlFor="email" className="">
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg p-2 mb-3"
-          />
-          <label htmlFor="password" className="">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            className=" bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg p-2 mb-3"
-          />
-          <input
-            id="redirectTo"
-            name="redirectTo"
-            value={redirectTo}
-            type="hidden"
-          />
-          <FormButton action={login} loadingText="Logging in...">
-            Log In
-          </FormButton>
-          <p className="text-sm font-light text-gray-500">
-            Need an account?{" "}
-            <Link
-              href="/sign-up"
-              className="font-bold text-primary hover:underline"
-            >
-              Sign up here
-            </Link>
-          </p>
-        </form>
+        <LoginForm sitekey={process.env.CAPTCHA_SITEKEY} />
       </div>
     </>
   );

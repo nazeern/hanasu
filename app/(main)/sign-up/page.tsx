@@ -1,12 +1,9 @@
-import { signup } from "@/app/lib/actions";
-import Link from "next/link";
 import { LogoTitle } from "@/app/ui/logo";
 import Toast from "@/app/ui/toast";
-import FormButton from "@/app/ui/form-button";
 import GoogleButton from "@/app/ui/google-button";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { langInfo } from "@/app/lib/data";
+import SigninForm from "@/app/ui/signin-form";
 
 export default async function SignupPage({
   searchParams,
@@ -19,7 +16,7 @@ export default async function SignupPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (user) {
+  if (user || !process.env.CAPTCHA_SITEKEY) {
     redirect("/dashboard");
   }
   const params = await searchParams;
@@ -43,71 +40,7 @@ export default async function SignupPage({
           <span className="px-4 text-gray-500">or</span>
           <hr className="w-full border-t border-gray-300" />
         </div>
-        {/* Email & Password */}
-        <form className="flex flex-col gap-y-2">
-          <label htmlFor="email" className="">
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="you@example.com"
-            required
-            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg p-2 mb-3"
-          />
-          <label htmlFor="password" className="">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            required
-            className=" bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg p-2 mb-3"
-          />
-          <label htmlFor="name" className="">
-            First Name
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            required
-            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg p-2 mb-3"
-          />
-          <label htmlFor="lang" className="">
-            Target Language
-          </label>
-          <select
-            id="lang"
-            name="lang"
-            required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          >
-            {langInfo.map((info) => (
-              <option key={info.lang} value={info.lang}>
-                {info.name} {info.flag}
-              </option>
-            ))}
-          </select>
-          <p className="text-xs font-bold text-gray-500 -mt-1 mb-4">
-            You can change this at any time.
-          </p>
-          <FormButton action={signup} loadingText="Signing up...">
-            Sign Up
-          </FormButton>
-          <p className="text-sm font-light text-gray-500">
-            Already have an account?{" "}
-            <Link
-              href="/login"
-              className="font-bold text-primary hover:underline"
-            >
-              Login here
-            </Link>
-          </p>
-        </form>
+        <SigninForm sitekey={process.env.CAPTCHA_SITEKEY} />
       </div>
       <p className="text-xs text-gray-500 font-light mt-4 pb-12 px-1">
         By continuing, you agree to SimpleClip&apos;s{" "}
