@@ -37,8 +37,10 @@ export default async function Page({
     redirect("/onboard");
   }
   let vocab = await selectDueVocabulary(user.id, profile.lang);
+  let due = true;
   if (!vocab) {
     vocab = (await selectWarmupVocabulary(user.id, profile.lang))[0];
+    due = false;
   }
   const entry = await idSelectDict(profile.lang, vocab?.word_id);
 
@@ -51,6 +53,7 @@ export default async function Page({
       entry={entry}
       message={message}
       lang={profile.lang}
+      due={due}
     />
   );
 }

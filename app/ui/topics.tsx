@@ -12,11 +12,13 @@ export default function Topics({
   topics,
   entry,
   lang,
+  due,
 }: {
   user: User;
   topics: string[];
   entry: Entry | null;
   lang: string;
+  due: boolean;
 }) {
   return (
     <div className="grow flex flex-col gap-8 items-center justify-center pt-12 pb-48 px-4">
@@ -42,12 +44,19 @@ export default function Topics({
             includeDefinitions={false}
             lang={lang}
           />
-          <IconButton
-            icon={BookOpenIcon}
-            text="Review your Vocabulary"
-            className="px-4 py-2 bg-primary text-onprimary rounded-full"
-            href="/review"
-          />
+          <div className="relative">
+            {due && (
+              <div className="absolute -top-3 -right-2 bg-primarybg text-primary rounded-full px-2 border border-primary text-sm">
+                Due
+              </div>
+            )}
+            <IconButton
+              icon={BookOpenIcon}
+              text="Review your Vocabulary"
+              className="px-4 py-2 bg-primary text-onprimary rounded-full"
+              href="/review"
+            />
+          </div>
         </>
       )}
     </div>

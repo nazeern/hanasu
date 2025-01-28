@@ -13,7 +13,7 @@ import { useState } from "react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 
 const topics = [
-  "What is your favorite food?",
+  "What is your morning routine?",
   "Do you have any hobbies?",
   "What did you do today?",
 ];
@@ -24,12 +24,14 @@ export default function DashboardPage({
   entry,
   message,
   lang,
+  due,
 }: {
   user: User;
   profile: Tables<"profiles">;
   entry: Entry | null;
   message?: string;
   lang: string;
+  due: boolean;
 }) {
   const [msg, setMsg] = useState<string>(message ?? "");
 
@@ -50,7 +52,7 @@ export default function DashboardPage({
           className="mx-auto px-2 py-1 rounded-lg bg-primarybg text-primary border border-primary"
         />
       )}
-      <Topics user={user} topics={topics} entry={entry} lang={lang} />
+      <Topics user={user} topics={topics} entry={entry} lang={lang} due={due} />
     </div>
   );
 }

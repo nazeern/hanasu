@@ -354,7 +354,7 @@ export default function RTCMainApp({
               model: "whisper-1",
             },
             voice: "alloy",
-            instructions: `Always speak in ${langName}. You are casually conversing about the user and asking questions in a friendly manner. The topic is: ${topic}`,
+            instructions: `Always speak in ${langName}. You are casually conversing about the user and asking questions in a friendly manner. Try to limit your responses to one or two sentences. The topic is: ${topic}`,
             turn_detection: {
               type: "server_vad",
               silence_duration_ms: 1500,
