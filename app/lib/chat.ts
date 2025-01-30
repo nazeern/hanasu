@@ -144,7 +144,7 @@ export async function grammarAssist(sentence: string, lang: string): Promise<str
             Analyze the text below for usage issues or unnatural phrases.
             If you see an improvement to be made, respond with a short and brief explanation or correction in English.
             If the sentence is reasonably correct, respond with an empty string.
-            Do not provide any additional commentary or preamble. Do not provide pronunciation advice.
+            Do not provide any additional commentary or preamble. Do not provide pronunciation advice. Do not translate.
             ` },
             {
                 role: "user",
