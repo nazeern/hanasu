@@ -14,6 +14,7 @@ import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { langInfo } from "@/app/lib/data";
 import MicButton from "@/app/ui/mic-button";
 import { stripeMeterEvent } from "@/app/lib/stripe";
+import { grammarAssist } from "../lib/chat";
 
 export type TokenUsage = {
   audio: {
@@ -198,7 +199,7 @@ export default function RTCMainApp({
 
   /** Handle an event from OpenAI. */
   // eslint-disable-next-line
-  function handleEventOAI(e: MessageEvent<any>) {
+  async function handleEventOAI(e: MessageEvent<any>) {
     const oai = JSON.parse(e.data);
     // console.log(oai);
 
@@ -215,22 +216,29 @@ export default function RTCMainApp({
         ]);
         break;
       case "conversation.item.input_audio_transcription.completed":
-        setChatMessages((chat) =>
-          chat.map((msg) =>
-            msg.id != oai.item_id
-              ? msg
-              : { ...msg, content: oai.transcript.replace("～", "") }
-          )
-        );
+        const content = oai.transcript.replace("～", "");
+        setChatMessages((chat) => {
+          return chat.map((msg) =>
+            msg.id != oai.item_id ? msg : { ...msg, content: content }
+          );
+        });
+        const grammarMessage = await grammarAssist(content, lang);
+        if (grammarMessage) {
+          setChatMessages((chat) => {
+            return chat.map((msg) =>
+              msg.id != oai.item_id ? msg : { ...msg, grammar: grammarMessage }
+            );
+          });
+        }
+        console.log(grammarMessage);
         break;
       case "response.audio_transcript.done":
-        setChatMessages((chat) =>
-          chat.map((msg) =>
-            msg.id != oai.item_id
-              ? msg
-              : { ...msg, content: oai.transcript.replace("～", "") }
-          )
-        );
+        setChatMessages((chat) => {
+          const content = oai.transcript.replace("～", "");
+          return chat.map((msg) =>
+            msg.id != oai.item_id ? msg : { ...msg, content: content }
+          );
+        });
         break;
       case "session.updated":
         break;

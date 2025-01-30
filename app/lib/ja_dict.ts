@@ -43,7 +43,6 @@ const tokenizer = new Promise((resolve, reject) => {
   });
 
 export async function selectJa(sentence: string, tap: number): Promise<[Entry[] | null, Interval | null]> {
-    console.log(sentence, tap)
     const tokens = (await tokenizer as any).tokenize(sentence)  // eslint-disable-line
     if (!tokens) { return [null, null] }
     const token = tokens.find((t: any, i: number) => {  // eslint-disable-line
@@ -52,7 +51,6 @@ export async function selectJa(sentence: string, tap: number): Promise<[Entry[] 
         return pos <= tap && tap < pos + parsed.length
     })
     if (!token) { return [null, null] }
-    console.log(token)
     const pos = token.word_position - 1
     const parsed = token.surface_form
 

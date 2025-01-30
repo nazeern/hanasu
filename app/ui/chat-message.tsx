@@ -11,6 +11,7 @@ import DictionaryModal, {
 } from "@/app/ui/dictionary-modal";
 import { selectVocabulary } from "@/app/lib/vocabulary";
 import { langInfo, selectDict } from "@/app/lib/data";
+import GrammarAssist from "@/app/ui/grammar-assist";
 
 let timeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -45,32 +46,38 @@ export default function ChatMessage({
   }
 
   return (
-    <div
-      onClick={handleClick}
-      className={cn("flex flex-col py-1 px-4 rounded-xl max-w-11/12 divide-y", {
-        "self-start bg-gray-300 text-black": message.from == "assistant",
-        "self-end bg-primary text-onprimary": message.from == "user",
-      })}
-    >
-      {modal && (
-        <PopupWrapper hideModal={() => setModal(null)}>
-          <DictionaryModal
-            user={user}
-            word={modal.word}
-            entries={modal.entries}
-            setModal={setModal}
-            lang={lang}
-          />
-        </PopupWrapper>
-      )}
-      {content && (
-        <p ref={p} className="py-1">
-          {content}
-        </p>
-      )}
-      {render(message.romanized)}
-      {render(message.translated)}
-    </div>
+    <>
+      {message.grammar && <GrammarAssist message={message.grammar} />}
+      <div
+        onClick={handleClick}
+        className={cn(
+          "flex flex-col py-1 px-4 rounded-xl max-w-11/12 divide-y",
+          {
+            "self-start bg-gray-300 text-black": message.from == "assistant",
+            "self-end bg-primary text-onprimary": message.from == "user",
+          }
+        )}
+      >
+        {modal && (
+          <PopupWrapper hideModal={() => setModal(null)}>
+            <DictionaryModal
+              user={user}
+              word={modal.word}
+              entries={modal.entries}
+              setModal={setModal}
+              lang={lang}
+            />
+          </PopupWrapper>
+        )}
+        {content && (
+          <p ref={p} className="py-1">
+            {content}
+          </p>
+        )}
+        {render(message.romanized)}
+        {render(message.translated)}
+      </div>
+    </>
   );
 
   /** Detect two clicks within milliseconds, else treat as single click.
@@ -105,7 +112,6 @@ export default function ChatMessage({
       return;
     }
     const [entries, parsed] = await selectDict(lang, message.content, tap);
-    console.log(entries, parsed);
 
     // Check which entries users already saved
     const wordIds = entries?.map((e) => e.id) ?? [];

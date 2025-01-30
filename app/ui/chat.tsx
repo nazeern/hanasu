@@ -11,6 +11,7 @@ export type ChatMessageData = {
   hidden?: boolean;
   translated?: string;
   romanized?: string;
+  grammar?: string;
 };
 
 export const sampleChatMessages: ChatMessageData[] = [
@@ -19,6 +20,8 @@ export const sampleChatMessages: ChatMessageData[] = [
     from: "user",
     content: "Hello",
     hidden: true,
+    grammar:
+      "This is correct, but it is slightly unnatural. Try to use this other thing instead.",
   },
   {
     id: "SG_f4b9f7d98311",

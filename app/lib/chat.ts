@@ -3,6 +3,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { TranslationServiceClient } from "@google-cloud/translate";
 import { google } from "googleapis";
+import OpenAI from "openai";
+import { langInfo } from "@/app/lib/data";
+
+const openai = new OpenAI()
 
 const projectId = process.env.GOOGLE_PROJECT_ID;
 const location = 'global';
@@ -128,4 +132,34 @@ export async function newGoogleToken(userId: string, refreshToken: string): Prom
 
     // Return
     return access_token ?? ""
+}
+
+/** Return grammar advice for the given SENTENCE. */
+export async function grammarAssist(sentence: string, lang: string): Promise<string> {
+    const langName = langInfo.find((info) => info.lang == lang)?.name
+    const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+            {role: "system", content: `You are a helpful and polite ${langName} language assistant, helping users learn & improve.
+            Analyze the text below for usage issues or unnatural phrases.
+            If you see an improvement to be made, respond with a short and brief explanation or correction in English.
+            If the sentence is reasonably correct, respond with an empty string.
+            Do not provide any additional commentary or preamble. Do not provide pronunciation advice.
+            ` },
+            {
+                role: "user",
+                content: sentence,
+            },
+        ],
+        store: true,
+        temperature: 0,
+        max_completion_tokens: 500,
+    });
+
+    const response = completion.choices[0].message.content?.trim() ?? ""
+    if (response.length < 5) {
+        return ""
+    }
+
+    return response
 }
