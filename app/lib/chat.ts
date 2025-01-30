@@ -157,7 +157,7 @@ export async function grammarAssist(sentence: string, lang: string): Promise<str
     });
 
     const response = completion.choices[0].message.content?.trim() ?? ""
-    if (response.length < 5) {
+    if (response.length < 25) {
         return ""
     }
 
