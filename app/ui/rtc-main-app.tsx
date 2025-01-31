@@ -15,6 +15,7 @@ import { langInfo } from "@/app/lib/data";
 import MicButton from "@/app/ui/mic-button";
 import { stripeMeterEvent } from "@/app/lib/stripe";
 import { grammarAssist } from "../lib/chat";
+import { useIdleTimer } from "react-idle-timer";
 
 export type TokenUsage = {
   audio: {
@@ -77,6 +78,12 @@ export default function RTCMainApp({
   ephemeralToken: string;
   topic: string;
 }) {
+  useIdleTimer({
+    timeout: 1000 * 60 * 10,
+    onIdle: () => closeRTC(rtc.current),
+    debounce: 500,
+  });
+
   const initialized = useRef<boolean>(false);
   const prevDuration = useRef<number>(0);
   const sessionStart = useRef<number>(0);
@@ -360,6 +367,7 @@ export default function RTCMainApp({
           session: {
             input_audio_transcription: {
               model: "whisper-1",
+              language: lang,
             },
             voice: "alloy",
             instructions: `Always speak in ${langName}. You are casually conversing about the user and asking questions in a friendly manner. Try to limit your responses to one or two sentences. The topic is: ${topic}`,

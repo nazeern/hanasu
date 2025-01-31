@@ -27,6 +27,7 @@
     "openai": "^4.80.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-idle-timer": "^5.7.2",
     "react-typed": "^2.0.12",
     "stripe": "^17.4.0",
     "tailwind-merge": "^2.5.5"
