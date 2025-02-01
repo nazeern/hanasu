@@ -50,7 +50,7 @@ export default async function ChatPage({
   }
 
   const topic = (await searchParams).topic ?? "What do you want to talk about?";
-  const ephemeralToken: string = await mintEphemeralToken();
+  const ephemeralToken: string = await mintEphemeralToken(lang);
 
   return (
     <RTCMainApp

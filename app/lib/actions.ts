@@ -119,7 +119,7 @@ export async function anonSignup(captchaToken?: string) {
 
 /** Ask OpenAI for an ephemeral token.
  * We can use the ephemeral token on the client to create a session. */
-export async function mintEphemeralToken() {
+export async function mintEphemeralToken(lang: string) {
   const r = await fetch("https://api.openai.com/v1/realtime/sessions", {
     method: "POST",
     headers: {
@@ -131,11 +131,13 @@ export async function mintEphemeralToken() {
       voice: "verse",
       input_audio_transcription: {
         model: "whisper-1",
+        language: lang,
       },
       max_response_output_tokens: 300,
     }),
   })
   const data = await r.json()
+  console.log(data)
 
   return data.client_secret.value
 }
