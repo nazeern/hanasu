@@ -9,7 +9,7 @@ export function PopupWrapper({
 }) {
   return (
     <div
-      className="fixed inset-0 z-50"
+      className="fixed inset-0 z-50 bg-black/5"
       onClick={(e) => {
         e.stopPropagation();
         hideModal();

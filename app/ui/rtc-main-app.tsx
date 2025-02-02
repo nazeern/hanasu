@@ -17,6 +17,7 @@ import { stripeMeterEvent } from "@/app/lib/stripe";
 import { grammarAssist } from "../lib/chat";
 import { useIdleTimer } from "react-idle-timer";
 import Joyride from "react-joyride";
+import SessionOverview from "@/app/ui/session-overview";
 
 export type TokenUsage = {
   audio: {
@@ -198,6 +199,7 @@ export default function RTCMainApp({
         <LogoTitle />
         <ProfileIcon initial={user.user_metadata?.name[0]} />
       </div>
+      {connState == "disconnected" && <SessionOverview session={session} />}
       {connState == "connecting" ? (
         <div className="h-full w-full pb-48 flex flex-col items-center justify-center gap-4">
           <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
@@ -225,7 +227,7 @@ export default function RTCMainApp({
         <IconButton
           icon={HomeIcon}
           text="Return to Home"
-          className="mx-auto w-fit px-4 py-2 bg-primary text-onprimary rounded-full"
+          className="mx-auto w-fit mt-1 px-4 py-2 bg-primary text-onprimary rounded-full"
           href="/dashboard"
         />
       ) : null}

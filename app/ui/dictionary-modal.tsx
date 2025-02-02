@@ -40,7 +40,7 @@ function renderEntries(
         lang={lang}
       />
     ));
-  } else {
+  } else if (entries == null) {
     return [
       <div
         key={0}
@@ -55,6 +55,8 @@ function renderEntries(
         className="bg-slate-400/50 m-2 h-4 w-full rounded-full animate-pulse"
       />,
     ];
+  } else {
+    return <p>No dictionary entries found.</p>;
   }
 }
 
