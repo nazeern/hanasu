@@ -180,3 +180,31 @@ export async function idSelectDict(lang: string, wordId?: number): Promise<Entry
       return null
   }
 }
+
+export enum Experience {
+  ONBOARD = "onboard",
+  JOYRIDE = "joyride"
+}
+
+export const joyrideSteps = [
+  {
+    target: "#chat-message",
+    content: "Need help? Double-tap a word to reveal the transcript.",
+  },
+  {
+    target: "#chat-message",
+    content: "Need vocabulary help? Single tap for a dictionary lookup, and save to get a custom review plan.",
+  },
+  {
+    target: "#chat-message",
+    content: "Need reading help? Double-tap to romanize the text.",
+  },
+  {
+    target: "#chat-message",
+    content: "Want to check your understanding? Double-tap for translations by Google.",
+  },
+  {
+    target: "#mic-button",
+    content: "You're all set! Hold down the mic button and speak normally!",
+  },
+];

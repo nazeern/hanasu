@@ -38,6 +38,7 @@ export default function MicButton({
   }, []);
   return (
     <button
+      id="mic-button"
       ref={buttonRef}
       className={cn("flex gap-1 items-center rounded-md", {
         "mx-auto p-2 bg-primary fill-primarybg": muted,

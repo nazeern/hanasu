@@ -11,11 +11,12 @@ import { insertSession, updateSession } from "@/app/lib/sessions";
 import { LogoTitle } from "@/app/ui/logo";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { langInfo } from "@/app/lib/data";
+import { joyrideSteps, langInfo } from "@/app/lib/data";
 import MicButton from "@/app/ui/mic-button";
 import { stripeMeterEvent } from "@/app/lib/stripe";
 import { grammarAssist } from "../lib/chat";
 import { useIdleTimer } from "react-idle-timer";
+import Joyride from "react-joyride";
 
 export type TokenUsage = {
   audio: {
@@ -72,11 +73,13 @@ export default function RTCMainApp({
   lang,
   ephemeralToken,
   topic,
+  joyrideActive,
 }: {
   user: User;
   lang: string;
   ephemeralToken: string;
   topic: string;
+  joyrideActive: boolean;
 }) {
   useIdleTimer({
     timeout: 1000 * 60 * 10,
@@ -88,6 +91,7 @@ export default function RTCMainApp({
   const prevDuration = useRef<number>(0);
   const sessionStart = useRef<number>(0);
   const [connState, setConnState] = useState<ConnectionState>("connecting");
+  const [joyrideIndex, setJoyrideIndex] = useState<number | null>(null);
   useEffect(() => {
     if (!initialized.current) {
       initialized.current = true;
@@ -139,6 +143,7 @@ export default function RTCMainApp({
   }, [session]);
 
   useEffect(() => {
+    handleJoyride();
     if (userResponseInterval.start && userResponseInterval.end) {
       const newDuration = userResponseInterval.end - userResponseInterval.start;
       const n = session.nResponses;
@@ -157,6 +162,29 @@ export default function RTCMainApp({
 
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col h-dvh px-1 py-2 border-x border-gray-400">
+      {joyrideActive && joyrideIndex != null && (
+        <Joyride
+          run={true}
+          steps={joyrideSteps}
+          stepIndex={joyrideIndex}
+          hideBackButton={true}
+          hideCloseButton={true}
+          locale={{
+            close: "Okay",
+          }}
+          styles={{
+            options: {
+              primaryColor: "#7525f5",
+            },
+          }}
+          callback={(data) => {
+            if (data.action != "close" || data.type != "step:after") {
+              return;
+            }
+            handleJoyride();
+          }}
+        />
+      )}
       <BlurTop />
       <BlurBottom />
       <audio ref={audioRef} autoPlay={true}></audio>
@@ -435,5 +463,31 @@ export default function RTCMainApp({
         },
       };
     });
+  }
+
+  /** Determine what the next joyride step should be. */
+  function handleJoyride() {
+    const info = langInfo.find((info) => info.lang == lang);
+    if (!info) {
+      return;
+    }
+    if (!chatMessages.length) {
+      return;
+    }
+    // Block joyride update
+    const msg = chatMessages[0];
+    if (msg.hidden) {
+      setJoyrideIndex(0);
+    } else if (joyrideIndex == 0 && info.supportsDict && !msg.hidden) {
+      setJoyrideIndex(1);
+    } else if (info.canRomanize && !msg.romanized) {
+      setJoyrideIndex(2);
+    } else if (!msg.translated) {
+      setJoyrideIndex(3);
+    } else if (joyrideIndex == 3) {
+      setJoyrideIndex(4);
+    } else if (joyrideIndex == 4 && chatMessages[1]) {
+      setJoyrideIndex(5);
+    }
   }
 }

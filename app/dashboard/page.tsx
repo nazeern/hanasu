@@ -6,11 +6,7 @@ import {
 } from "@/app/lib/vocabulary";
 import DashboardPage from "@/app/ui/dashboard-page";
 import { selectProfile, updateProfile } from "@/app/lib/profiles";
-import { idSelectDict } from "@/app/lib/data";
-
-enum Experience {
-  ONBOARD = "onboard",
-}
+import { Experience, idSelectDict } from "@/app/lib/data";
 
 export default async function Page({
   searchParams,

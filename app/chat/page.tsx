@@ -2,8 +2,13 @@ import RTCMainApp from "@/app/ui/rtc-main-app";
 import { mintEphemeralToken } from "../lib/actions";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { getCurrentPlan, selectProfile, upcomingCost } from "../lib/profiles";
-import { Plan, planInfo } from "@/app/lib/data";
+import {
+  getCurrentPlan,
+  selectProfile,
+  upcomingCost,
+  updateProfile,
+} from "../lib/profiles";
+import { Experience, Plan, planInfo } from "@/app/lib/data";
 import { querySessions, totalCost } from "@/app/lib/sessions";
 import PaywallMainApp from "@/app/ui/paywall-main-app";
 
@@ -48,6 +53,12 @@ export default async function ChatPage({
   if (!lang) {
     redirect("/dashboard");
   }
+  let joyrideActive: boolean = false;
+  if (!profile.experienced.includes(Experience.JOYRIDE.toString())) {
+    joyrideActive = true;
+    profile.experienced.push(Experience.JOYRIDE.toString());
+    updateProfile(profile);
+  }
 
   const topic = (await searchParams).topic ?? "What do you want to talk about?";
   const ephemeralToken: string = await mintEphemeralToken(lang);
@@ -58,6 +69,7 @@ export default async function ChatPage({
       lang={lang}
       ephemeralToken={ephemeralToken}
       topic={topic}
+      joyrideActive={joyrideActive}
     />
   );
 }

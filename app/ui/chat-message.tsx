@@ -16,11 +16,13 @@ import GrammarAssist from "@/app/ui/grammar-assist";
 let timeout: ReturnType<typeof setTimeout> | null = null;
 
 export default function ChatMessage({
+  id,
   user,
   lang,
   message,
   setChatMessages,
 }: {
+  id?: string;
   user: User;
   lang: string;
   message: ChatMessageData;
@@ -49,6 +51,7 @@ export default function ChatMessage({
     <>
       {message.grammar && <GrammarAssist message={message.grammar} />}
       <div
+        id={id}
         onClick={handleClick}
         className={cn(
           "flex flex-col py-1 px-4 rounded-xl max-w-11/12 divide-y",
