@@ -46,9 +46,9 @@ export default function Chat({
 }) {
   return (
     <div className="grow flex flex-col-reverse gap-3 overflow-y-scroll">
-      {chatMessages.toReversed().map((msg, i) => (
+      {chatMessages.toReversed().map((msg) => (
         <ChatMessage
-          id={i == chatMessages.length - 1 ? "chat-message" : undefined}
+          id="chat-message"
           user={user}
           key={msg.id}
           lang={lang}

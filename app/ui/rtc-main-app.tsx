@@ -11,7 +11,7 @@ import { insertSession, updateSession } from "@/app/lib/sessions";
 import { LogoTitle } from "@/app/ui/logo";
 import { HomeIcon } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { joyrideSteps, langInfo } from "@/app/lib/data";
+import { getJoyrideSteps, langInfo } from "@/app/lib/data";
 import MicButton from "@/app/ui/mic-button";
 import { stripeMeterEvent } from "@/app/lib/stripe";
 import { grammarAssist } from "../lib/chat";
@@ -92,7 +92,7 @@ export default function RTCMainApp({
   const prevDuration = useRef<number>(0);
   const sessionStart = useRef<number>(0);
   const [connState, setConnState] = useState<ConnectionState>("connecting");
-  const [joyrideIndex, setJoyrideIndex] = useState<number | null>(null);
+  const [showingJoyride, setShowingJoyride] = useState<boolean>(false);
   useEffect(() => {
     if (!initialized.current) {
       initialized.current = true;
@@ -144,7 +144,9 @@ export default function RTCMainApp({
   }, [session]);
 
   useEffect(() => {
-    handleJoyride();
+    if (chatMessages.length) {
+      setShowingJoyride(true);
+    }
     if (userResponseInterval.start && userResponseInterval.end) {
       const newDuration = userResponseInterval.end - userResponseInterval.start;
       const n = session.nResponses;
@@ -163,26 +165,21 @@ export default function RTCMainApp({
 
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col h-dvh px-1 py-2 border-x border-gray-400">
-      {joyrideActive && joyrideIndex != null && (
+      {joyrideActive && showingJoyride && (
         <Joyride
           run={true}
-          steps={joyrideSteps}
-          stepIndex={joyrideIndex}
-          hideBackButton={true}
-          hideCloseButton={true}
-          locale={{
-            close: "Okay",
-          }}
+          steps={getJoyrideSteps(lang)}
+          continuous
+          disableScrolling
+          showProgress
+          showSkipButton
           styles={{
             options: {
               primaryColor: "#7525f5",
             },
           }}
-          callback={(data) => {
-            if (data.action != "close" || data.type != "step:after") {
-              return;
-            }
-            handleJoyride();
+          locale={{
+            last: "Done",
           }}
         />
       )}
@@ -397,7 +394,7 @@ export default function RTCMainApp({
           session: {
             input_audio_transcription: {
               model: "whisper-1",
-              language: lang,
+              language: lang.slice(0, 2),
             },
             voice: "alloy",
             instructions: `Always speak in ${langName}. You are casually conversing about the user and asking questions in a friendly manner. Try to limit your responses to one or two sentences. The topic is: ${topic}`,
@@ -465,31 +462,5 @@ export default function RTCMainApp({
         },
       };
     });
-  }
-
-  /** Determine what the next joyride step should be. */
-  function handleJoyride() {
-    const info = langInfo.find((info) => info.lang == lang);
-    if (!info) {
-      return;
-    }
-    if (!chatMessages.length) {
-      return;
-    }
-    // Block joyride update
-    const msg = chatMessages[0];
-    if (msg.hidden) {
-      setJoyrideIndex(0);
-    } else if (joyrideIndex == 0 && info.supportsDict && !msg.hidden) {
-      setJoyrideIndex(1);
-    } else if (info.canRomanize && !msg.romanized) {
-      setJoyrideIndex(2);
-    } else if (!msg.translated) {
-      setJoyrideIndex(3);
-    } else if (joyrideIndex == 3) {
-      setJoyrideIndex(4);
-    } else if (joyrideIndex == 4 && chatMessages[1]) {
-      setJoyrideIndex(5);
-    }
   }
 }

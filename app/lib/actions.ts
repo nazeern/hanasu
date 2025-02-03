@@ -131,7 +131,7 @@ export async function mintEphemeralToken(lang: string) {
       voice: "verse",
       input_audio_transcription: {
         model: "whisper-1",
-        language: lang,
+        language: lang.slice(0, 2),
       },
       max_response_output_tokens: 300,
     }),

@@ -186,25 +186,34 @@ export enum Experience {
   JOYRIDE = "joyride"
 }
 
-export const joyrideSteps = [
-  {
-    target: "#chat-message",
-    content: "Need help? Double-tap a word to reveal the transcript.",
-  },
-  {
-    target: "#chat-message",
-    content: "Need vocabulary help? Single tap for a dictionary lookup, and save to get a custom review plan.",
-  },
-  {
-    target: "#chat-message",
-    content: "Need reading help? Double-tap to romanize the text.",
-  },
-  {
-    target: "#chat-message",
-    content: "Want to check your understanding? Double-tap for translations by Google.",
-  },
-  {
-    target: "#mic-button",
-    content: "You're all set! Hold down the mic button and speak normally!",
-  },
-];
+export function getJoyrideSteps(lang: string) {
+  const info = langInfo.find((info) => info.lang == lang)
+  if (!info) { return [] }
+  return [
+    {
+      target: "#chat-message",
+      content: "Welcome! You can double-tap a message to reveal the transcript.",
+      disableBeacon: true,
+    },
+    ...info.supportsDict ? [{
+      target: "#chat-message",
+      content: "Need vocabulary help? Single tap a word to search the dictionary, and then save it to your lesson plan.",
+      disableBeacon: true,
+    }] : [],
+    ...info.canRomanize ? [{
+      target: "#chat-message",
+      content: "Need help reading? Just double-tap to romanize the text.",
+      disableBeacon: true,
+    }] : [],
+    {
+      target: "#chat-message",
+      content: "Want to check your understanding? Double-tap again for translations by Google.",
+      disableBeacon: true,
+    },
+    {
+      target: "#mic-button",
+      content: "You're all set! Just hold down the mic button and speak normally!",
+      disableBeacon: true,
+    },
+  ];
+}

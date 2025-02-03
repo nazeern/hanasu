@@ -18,7 +18,7 @@ export default function SessionOverview({ session }: { session: Session }) {
         </div>
         <div className="rounded-md bg-white border p-4">
           <p className="font-bold text-2xl">
-            {session.avgResponseDurationMs}ms
+            {Math.round(session.avgResponseDurationMs)}ms
           </p>
           <p className="text-gray-500">Avg. Response Duration</p>
         </div>
