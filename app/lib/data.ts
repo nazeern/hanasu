@@ -38,6 +38,11 @@ export const langInfo: LangInfo[] = [
     name: "Spanish",
   },
   {
+    lang: "fr",
+    flag: "🇫🇷",
+    name: "French",
+  },
+  {
     lang: "de",
     flag: "🇩🇪",
     name: "German",

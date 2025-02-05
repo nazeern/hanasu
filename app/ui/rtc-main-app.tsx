@@ -90,7 +90,7 @@ export default function RTCMainApp({
 
   const initialized = useRef<boolean>(false);
   const prevDuration = useRef<number>(0);
-  const sessionStart = useRef<number>(0);
+  const sessionStart = useRef<number>(performance.now());
   const [connState, setConnState] = useState<ConnectionState>("connecting");
   const [showingJoyride, setShowingJoyride] = useState<boolean>(false);
   useEffect(() => {
@@ -104,7 +104,7 @@ export default function RTCMainApp({
 
   const persistSession = useCallback(
     debounce(
-      async (session: Session, chatMessages) => {
+      async (session: Session, chatMessages, prevDuration) => {
         updateSession(session, chatMessages);
         const delta = (session.duration - prevDuration.current) / 60;
         const success = await stripeMeterEvent(user.id, delta);
@@ -140,7 +140,7 @@ export default function RTCMainApp({
   });
 
   useEffect(() => {
-    persistSession(session, chatMessages);
+    persistSession(session, chatMessages, prevDuration);
   }, [session]);
 
   useEffect(() => {

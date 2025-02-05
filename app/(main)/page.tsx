@@ -27,6 +27,14 @@ export default async function Landing() {
         Learn language through natural conversation topics
       </p>
       <CTA />
+      <p className="text-3xl md:text-4xl">Hanasu in 30 seconds!</p>
+      <iframe
+        src="https://youtube.com/embed/BoAVCpPwDhQ?rel=0"
+        title="Hanasu in 30 seconds!"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="w-full max-w-3xl h-96"
+      />
       <HowItWorksRow
         index={1}
         title="CHOOSE A TOPIC"
