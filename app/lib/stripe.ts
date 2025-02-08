@@ -55,13 +55,16 @@ type StripeSubscription = {
 }
 
 /* Subscribe customer id to a given price and return client secret. */
-export async function createStripeSubscription(customerId: string, priceId: string): Promise<StripeSubscription | null> {  // eslint-disable-line
+export async function createStripeSubscription(customerId: string, priceId: string, promoId?: string): Promise<StripeSubscription | null> {  // eslint-disable-line
     console.log(`Creating subscription for customer ${customerId}`)
     try {
         const subscription = await stripe.subscriptions.create({
             customer: customerId,
             items: [{
                 price: priceId,
+            }],
+            discounts: [{
+                promotion_code: promoId,
             }],
             payment_behavior: 'default_incomplete',
             payment_settings: { save_default_payment_method: 'on_subscription' },

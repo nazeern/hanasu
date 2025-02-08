@@ -10,8 +10,13 @@ import { useState } from "react";
 import { subscribeUser } from "../lib/profiles";
 import { User } from "@supabase/auth-js";
 import { BASE_URL_DEFAULT } from "../constants";
-import { LockClosedIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
-import { Plan, planInfo } from "@/app/lib/data";
+import {
+  LockClosedIcon,
+  ArrowPathIcon,
+  ChevronLeftIcon,
+} from "@heroicons/react/24/solid";
+import { couponInfo, Plan, planInfo } from "@/app/lib/data";
+import IconButton from "./icon-button";
 
 export default function CheckoutForm({
   user,
@@ -23,6 +28,9 @@ export default function CheckoutForm({
   const stripe = useStripe();
   const elements = useElements();
 
+  const [promoCode, setPromoCode] = useState<string>("");
+  const [promoMessage, setPromoMessage] = useState<string>("");
+  const [promoId, setPromoId] = useState<string | undefined>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -32,26 +40,50 @@ export default function CheckoutForm({
   searchParams.set("message", dashboardMessage);
 
   return (
-    <form onSubmit={handleSubmit} className="mt-12">
-      <PaymentElement />
-      <button
-        type="submit"
-        disabled={!stripe || loading}
-        className="my-6 w-full justify-center items-center gap-x-3 flex text-onprimary px-1 py-2 rounded-lg bg-primary disabled:bg-blue-400 hover:bg-primaryhov"
-      >
-        Submit Payment
-        {loading ? (
-          <ArrowPathIcon className="size-5 animate-spin" />
-        ) : (
-          <LockClosedIcon className="size-5" />
-        )}
-      </button>
-      {errorMessage && (
-        <div className="bg-primarybg p-2 text-primary text-center rounded-lg mt-4 border border-primary">
-          {errorMessage}
+    <div>
+      <IconButton
+        className="text-lg mb-4"
+        href="/pricing"
+        text="Back"
+        icon={ChevronLeftIcon}
+      />
+      <form onSubmit={handleSubmit} className="">
+        <PaymentElement />
+        <div className="flex items-center gap-1 mt-4">
+          <input
+            type="text"
+            value={promoCode}
+            onChange={(e) => setPromoCode(e.target.value)}
+            placeholder="Have a promo code?"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            className="p-2 rounded-md bg-primarybg text-primary border border-primary"
+            onClick={handleApplyPromo}
+          >
+            Apply
+          </button>
         </div>
-      )}
-    </form>
+        <p className="text-primary italic mt-1">{promoMessage}</p>
+        <button
+          type="submit"
+          disabled={!stripe || loading}
+          className="my-6 w-full justify-center items-center gap-x-3 flex text-onprimary px-1 py-2 rounded-lg bg-primary disabled:bg-blue-400 hover:bg-primaryhov"
+        >
+          Submit Payment
+          {loading ? (
+            <ArrowPathIcon className="size-5 animate-spin" />
+          ) : (
+            <LockClosedIcon className="size-5" />
+          )}
+        </button>
+        {errorMessage && (
+          <div className="bg-primarybg p-2 text-primary text-center rounded-lg mt-4 border border-primary">
+            {errorMessage}
+          </div>
+        )}
+      </form>
+    </div>
   );
 
   function handleError(error: StripeError) {
@@ -85,9 +117,17 @@ export default function CheckoutForm({
     }
 
     // Create the subscription
-    const result = await subscribeUser(user, plan);
+    const result = await subscribeUser(user, plan, promoId);
     if (!result) {
-      alert("Error subscribing user.");
+      alert(
+        promoId
+          ? "This promotion has already been redeemed."
+          : "Error subscribing user."
+      );
+      setLoading(false);
+      setPromoId(undefined);
+      setPromoCode("");
+      setPromoMessage("");
       return;
     }
     const { clientSecret, type } = result;
@@ -113,5 +153,31 @@ export default function CheckoutForm({
       // methods like iDEAL, your customer is redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
     }
+  }
+
+  function handleApplyPromo(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    const coupon = couponInfo.find((info) => info.promoCode == promoCode);
+    if (!promoCode) {
+      setPromoMessage("");
+      return;
+    }
+    if (!coupon) {
+      setPromoCode("");
+      setPromoMessage("Sorry, this promotion is invalid.");
+      return;
+    }
+    if (coupon.plan != plan) {
+      setPromoCode("");
+      setPromoMessage(
+        `This promotion is only available on the ${
+          planInfo[coupon.plan].display
+        }.`
+      );
+      return;
+    }
+    console.log(coupon);
+    setPromoMessage(`Coupon applied: ${coupon.promoDesc}`);
+    setPromoId(coupon.promoId);
   }
 }

@@ -18,14 +18,14 @@ type SubscribeUserResponse = {
  * 
  * Get customer id, price id and create subscription. Remove old subscriptions.
 */
-export async function subscribeUser(user: User, plan: Plan): Promise<SubscribeUserResponse | null> {
+export async function subscribeUser(user: User, plan: Plan, promoId?: string): Promise<SubscribeUserResponse | null> {
     const customerId = await stripeCustomer(user)
     if (!customerId) { return null }
 
     const priceId = planInfo[plan].priceId
     if (!priceId) { return null }
 
-    const subscription = await createStripeSubscription(customerId, priceId)
+    const subscription = await createStripeSubscription(customerId, priceId, promoId)
     if (!subscription) { return null }
 
     const cleanedUp = await removeOtherSubscriptions(customerId, subscription.id)
