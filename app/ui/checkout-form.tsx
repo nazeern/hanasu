@@ -143,6 +143,7 @@ export default function CheckoutForm({
       setLoading(false);
       setPromoId(undefined);
       setPromoCode("");
+      setAmount(planInfo[plan].baseAmount);
       setPromoMessage("");
       return;
     }
