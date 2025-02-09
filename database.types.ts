@@ -40,6 +40,7 @@ export type Database = {
           id: string
           lang: string
           name: string | null
+          notify: boolean
           stripe_id: string | null
           updated_at: string | null
         }
@@ -49,6 +50,7 @@ export type Database = {
           id: string
           lang?: string
           name?: string | null
+          notify?: boolean
           stripe_id?: string | null
           updated_at?: string | null
         }
@@ -58,6 +60,7 @@ export type Database = {
           id?: string
           lang?: string
           name?: string | null
+          notify?: boolean
           stripe_id?: string | null
           updated_at?: string | null
         }
@@ -156,13 +159,6 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "vocabulary_word_id_fkey"
-            columns: ["word_id"]
-            isOneToOne: false
-            referencedRelation: "ja_dict"
             referencedColumns: ["id"]
           },
         ]

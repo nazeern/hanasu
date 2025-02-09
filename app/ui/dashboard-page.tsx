@@ -4,19 +4,13 @@ import { BlurBottom, BlurTop } from "@/app/ui/blur";
 import { User } from "@supabase/auth-js";
 import ProfileIcon from "./profile-icon";
 import Topics from "@/app/ui/topics";
-import { Entry } from "@/app/lib/data";
+import { Entry, topics } from "@/app/lib/data";
 import { LogoTitle } from "./logo";
 import LangSelect from "@/app/ui/lang-select";
 import { Tables } from "@/database.types";
 import IconButton from "./icon-button";
 import { useState } from "react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
-
-const topics = [
-  "What is your morning routine?",
-  "Do you have any hobbies?",
-  "What did you do today?",
-];
 
 export default function DashboardPage({
   user,
