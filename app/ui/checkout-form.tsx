@@ -137,7 +137,7 @@ export default function CheckoutForm({
     if (!result) {
       alert(
         promoId
-          ? "This promotion has already been redeemed."
+          ? "This promotion is limited to first-time orders."
           : "Error subscribing user."
       );
       setLoading(false);
