@@ -55,7 +55,7 @@ type StripeSubscription = {
 }
 
 /* Subscribe customer id to a given price and return client secret. */
-export async function createStripeSubscription(customerId: string, plan: Plan, promoId?: string): Promise<StripeSubscription | null> {  // eslint-disable-line
+export async function createStripeSubscription(customerId: string, plan: Plan, trialPeriodDays?: number): Promise<StripeSubscription | null> {  // eslint-disable-line
     const priceId = planInfo[plan].priceId
     if (!priceId) { return null }
 
@@ -66,9 +66,7 @@ export async function createStripeSubscription(customerId: string, plan: Plan, p
             items: [{
                 price: priceId,
             }],
-            discounts: [{
-                promotion_code: promoId,
-            }],
+            trial_period_days: trialPeriodDays,
             payment_behavior: 'default_incomplete',
             payment_settings: { save_default_payment_method: 'on_subscription' },
             expand: ['pending_setup_intent', 'latest_invoice.payment_intent'],
