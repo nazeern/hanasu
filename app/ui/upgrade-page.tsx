@@ -5,7 +5,6 @@ import AcceptPayment from "@/app/ui/accept-payment";
 import PlanCard from "@/app/ui/plan-card";
 import { User } from "@supabase/auth-js";
 import { useState } from "react";
-import { currencyString } from "@/app/lib/utils";
 
 export default function UpgradePage({
   user,
