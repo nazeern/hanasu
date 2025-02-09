@@ -5,7 +5,7 @@ import { User } from "@supabase/auth-js";
 import { round } from "./utils";
 import { getCurrentPlan } from "./profiles";
 import { revalidatePath } from "next/cache";
-import { Plan } from "@/app/lib/data";
+import { Plan, planInfo } from "@/app/lib/data";
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY) // eslint-disable-line
 
@@ -55,7 +55,12 @@ type StripeSubscription = {
 }
 
 /* Subscribe customer id to a given price and return client secret. */
-export async function createStripeSubscription(customerId: string, priceId: string, promoId?: string): Promise<StripeSubscription | null> {  // eslint-disable-line
+export async function createStripeSubscription(customerId: string, plan: Plan, promoId?: string): Promise<StripeSubscription | null> {  // eslint-disable-line
+    const priceId = planInfo[plan].priceId
+    if (!priceId) { return null }
+
+    const expand = plan == Plan.MONTHLY ? ['latest_invoice.payment_intent'] : ['pending_setup_intent']
+
     console.log(`Creating subscription for customer ${customerId}`)
     try {
         const subscription = await stripe.subscriptions.create({
@@ -68,7 +73,7 @@ export async function createStripeSubscription(customerId: string, priceId: stri
             }],
             payment_behavior: 'default_incomplete',
             payment_settings: { save_default_payment_method: 'on_subscription' },
-            expand: ['latest_invoice.payment_intent', 'pending_setup_intent'],
+            expand: expand,
         })
         if (subscription.pending_setup_intent !== null) {
             return {

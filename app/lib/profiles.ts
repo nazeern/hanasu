@@ -5,7 +5,7 @@ import { stripeCustomer, createStripeSubscription, removeOtherSubscriptions } fr
 import { createClient } from "@/utils/supabase/server";
 import { Tables } from "@/database.types";
 import { revalidatePath } from "next/cache";
-import { Plan, planFromPriceId, planInfo } from "@/app/lib/data";
+import { Plan, planFromPriceId } from "@/app/lib/data";
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)  // eslint-disable-line
 
@@ -22,10 +22,7 @@ export async function subscribeUser(user: User, plan: Plan, promoId?: string): P
     const customerId = await stripeCustomer(user)
     if (!customerId) { return null }
 
-    const priceId = planInfo[plan].priceId
-    if (!priceId) { return null }
-
-    const subscription = await createStripeSubscription(customerId, priceId, promoId)
+    const subscription = await createStripeSubscription(customerId, plan, promoId)
     if (!subscription) { return null }
 
     const cleanedUp = await removeOtherSubscriptions(customerId, subscription.id)
