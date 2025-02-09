@@ -32,7 +32,7 @@ export default function CheckoutForm({
 
   const [promoCode, setPromoCode] = useState<string>("");
   const [promoMessage, setPromoMessage] = useState<string>("");
-  const [trialPeriodDays, setTrialPeriodDays] = useState<number | undefined>();
+  const [promoId, setPromoId] = useState<string | undefined>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -119,15 +119,15 @@ export default function CheckoutForm({
     }
 
     // Create the subscription
-    const result = await subscribeUser(user, plan, trialPeriodDays);
+    const result = await subscribeUser(user, plan, promoId);
     if (!result) {
       alert(
-        trialPeriodDays
+        promoId
           ? "This promotion has already been redeemed."
           : "Error subscribing user."
       );
       setLoading(false);
-      setTrialPeriodDays(undefined);
+      setPromoId(undefined);
       setPromoCode("");
       setPromoMessage("");
       return;
@@ -162,13 +162,11 @@ export default function CheckoutForm({
     const coupon = couponInfo.find((info) => info.promoCode == promoCode);
     if (!promoCode) {
       setPromoMessage("");
-      setAmount(planInfo[plan].initialChargedAmount);
       return;
     }
     if (!coupon) {
       setPromoCode("");
       setPromoMessage("Sorry, this promotion is invalid.");
-      setAmount(planInfo[plan].initialChargedAmount);
       return;
     }
     if (coupon.plan != plan) {
@@ -178,11 +176,11 @@ export default function CheckoutForm({
           planInfo[coupon.plan].display
         }.`
       );
-      setAmount(planInfo[plan].initialChargedAmount);
       return;
     }
     console.log(coupon);
     setPromoMessage(`Coupon applied: ${coupon.promoDesc}`);
-    setTrialPeriodDays(coupon.trialPeriodDays);
+    setPromoId(coupon.promoId);
+    setAmount(coupon.amount);
   }
 }

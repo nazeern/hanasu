@@ -128,7 +128,6 @@ type PlanInfo = {
   display: string;
   priceId: string;
   limit: number;
-  initialChargedAmount: number;
 }
 
 export const planInfo: { [plan: string]: PlanInfo } = {
@@ -137,21 +136,18 @@ export const planInfo: { [plan: string]: PlanInfo } = {
     display: "Free Plan",
     priceId: "",
     limit: 30,
-    initialChargedAmount: 0,
   },
   [Plan.USAGE]: {
     name: "pay-as-you-go",
     display: "Pay as You Go Plan",
     priceId: process.env.USAGE_PLAN_PRICE_ID ?? "",
-    limit: Infinity,
-    initialChargedAmount: 0,
+    limit: Infinity
   },
   [Plan.MONTHLY]: {
     name: "monthly",
     display: "Monthly Plan",
     priceId: process.env.MONTHLY_PLAN_PRICE_ID ?? "",
-    limit: 1000,
-    initialChargedAmount: 2500,
+    limit: 1000
   },
 }
 
@@ -235,17 +231,19 @@ export function getJoyrideSteps(lang: string) {
 
 type CouponInfo = {
   promoCode: string,
-  trialPeriodDays?: number,
+  promoId?: string,
   promoDesc: string,
   plan: Plan,
+  amount: number,
 }
 
 export const couponInfo: CouponInfo[] = [
   {
     promoCode: 'SEIYA',
-    trialPeriodDays: 30,
+    promoId: "promo_1Qq6QgBG8kOO7xleESicSKD0",
     promoDesc: 'Get your first month free!',
     plan: Plan.MONTHLY,
+    amount: 0,
   }
 ]
 
