@@ -1,10 +1,9 @@
 import { Plan, planFromString } from "@/app/lib/data";
-import AcceptPayment from "@/app/ui/accept-payment";
-import PlanCard from "@/app/ui/plan-card";
+import UpgradePage from "@/app/ui/upgrade-page";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-export default async function UpgradePage({
+export default async function Page({
   searchParams,
 }: {
   searchParams: Promise<{ plan?: string }>;
@@ -25,10 +24,5 @@ export default async function UpgradePage({
   if (plan == Plan.FREE) {
     redirect("/dashboard");
   }
-  return (
-    <div className="w-full max-w-3xl flex md:flex-row flex-col gap-12 px-1">
-      <AcceptPayment user={user} plan={plan} />
-      <PlanCard plan={plan} userId={user?.id} />
-    </div>
-  );
+  return <UpgradePage user={user} plan={plan} />;
 }

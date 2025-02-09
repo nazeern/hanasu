@@ -4,8 +4,8 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./checkout-form";
 import { loadStripe } from "@stripe/stripe-js";
 import { User } from "@supabase/auth-js";
-import { Plan, planInfo } from "@/app/lib/data";
-import { useState } from "react";
+import { Plan } from "@/app/lib/data";
+import { Dispatch, SetStateAction } from "react";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""
@@ -14,16 +14,18 @@ const stripePromise = loadStripe(
 export default function AcceptPayment({
   user,
   plan,
+  paymentAmount,
+  setAmount,
 }: {
   user: User;
   plan: Plan;
+  paymentAmount: number;
+  setAmount: Dispatch<SetStateAction<number>>;
 }) {
-  const [amount, setAmount] = useState<number>(planInfo[plan].amount);
-
   // eslint-disable-next-line
   const options: any = {
     mode: "subscription",
-    amount: amount,
+    amount: paymentAmount,
     currency: "usd",
   };
 

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { cn } from "@/app/lib/utils";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
@@ -44,8 +46,6 @@ const renderData: { [key in Plan]: PlanDetails } = {
   [Plan.USAGE]: {
     title: "Pay as you Go",
     description: "Low per-minute rates. Don't use it? Don't pay.",
-    tag: "Most Popular",
-    featured: true,
     linkTo: "/upgrade?plan=pay-as-you-go",
     linkText: "Get Started",
     price: "$0.05",
@@ -68,6 +68,8 @@ const renderData: { [key in Plan]: PlanDetails } = {
     title: "Monthly",
     description:
       "For dedicated language learners who plan to practice regularly.",
+    tag: "Most Popular",
+    featured: true,
     linkTo: "/upgrade?plan=monthly",
     linkText: "Get Started",
     price: "$25",
@@ -90,12 +92,14 @@ const renderData: { [key in Plan]: PlanDetails } = {
   },
 };
 
-export default async function PlanCard({
+export default function PlanCard({
   plan,
   userId,
+  amountOverride,
 }: {
   plan: Plan;
   userId?: string;
+  amountOverride?: string;
 }) {
   const data = renderData[plan];
   const signupSearchParams = new URLSearchParams();
@@ -141,7 +145,7 @@ export default async function PlanCard({
       )}
       {/* Pricing */}
       <div className="flex items-end gap-x-2 mb-3">
-        <p className="text-5xl">{data.price}</p>
+        <p className="text-5xl">{amountOverride || data.price}</p>
         <p className="text-sm">{data.per}</p>
       </div>
       <hr className="w-full border-b border-gray-300 my-8" />

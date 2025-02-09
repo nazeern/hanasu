@@ -15,8 +15,8 @@ export default async function PricingPage() {
       </p>
       <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-1">
         <PlanCard key={Plan.FREE} plan={Plan.FREE} userId={user?.id} />
-        <PlanCard key={Plan.USAGE} plan={Plan.USAGE} userId={user?.id} />
         <PlanCard key={Plan.MONTHLY} plan={Plan.MONTHLY} userId={user?.id} />
+        <PlanCard key={Plan.USAGE} plan={Plan.USAGE} userId={user?.id} />
       </div>
     </div>
   );

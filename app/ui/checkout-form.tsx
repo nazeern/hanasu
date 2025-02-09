@@ -179,7 +179,7 @@ export default function CheckoutForm({
       return;
     }
     console.log(coupon);
-    setPromoMessage(`Coupon applied: ${coupon.promoDesc}`);
+    setPromoMessage(`Coupon applied! ${coupon.promoDesc}`);
     setPromoId(coupon.promoId);
     setAmount(coupon.amount);
   }
