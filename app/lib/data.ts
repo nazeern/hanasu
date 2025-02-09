@@ -128,6 +128,7 @@ type PlanInfo = {
   display: string;
   priceId: string;
   limit: number;
+  initialChargedAmount: number;
 }
 
 export const planInfo: { [plan: string]: PlanInfo } = {
@@ -136,18 +137,21 @@ export const planInfo: { [plan: string]: PlanInfo } = {
     display: "Free Plan",
     priceId: "",
     limit: 30,
+    initialChargedAmount: 0,
   },
   [Plan.USAGE]: {
     name: "pay-as-you-go",
     display: "Pay as You Go Plan",
     priceId: process.env.USAGE_PLAN_PRICE_ID ?? "",
-    limit: Infinity
+    limit: Infinity,
+    initialChargedAmount: 0,
   },
   [Plan.MONTHLY]: {
     name: "monthly",
     display: "Monthly Plan",
     priceId: process.env.MONTHLY_PLAN_PRICE_ID ?? "",
-    limit: 1000
+    limit: 1000,
+    initialChargedAmount: 2500,
   },
 }
 
