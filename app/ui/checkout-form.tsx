@@ -6,7 +6,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { StripeError } from "@stripe/stripe-js";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { subscribeUser } from "../lib/profiles";
 import { User } from "@supabase/auth-js";
 import { BASE_URL_DEFAULT } from "../constants";
@@ -21,9 +21,11 @@ import IconButton from "./icon-button";
 export default function CheckoutForm({
   user,
   plan,
+  setAmount,
 }: {
   user: User;
   plan: Plan;
+  setAmount: Dispatch<SetStateAction<number>>;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -179,5 +181,6 @@ export default function CheckoutForm({
     console.log(coupon);
     setPromoMessage(`Coupon applied: ${coupon.promoDesc}`);
     setPromoId(coupon.promoId);
+    setAmount(coupon.amount);
   }
 }

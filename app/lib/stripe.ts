@@ -59,8 +59,6 @@ export async function createStripeSubscription(customerId: string, plan: Plan, p
     const priceId = planInfo[plan].priceId
     if (!priceId) { return null }
 
-    const expand = (plan == Plan.USAGE ? ['pending_setup_intent'] : ['latest_invoice.payment_intent'])
-
     console.log(`Creating subscription for customer ${customerId}`)
     try {
         const subscription = await stripe.subscriptions.create({
@@ -68,14 +66,14 @@ export async function createStripeSubscription(customerId: string, plan: Plan, p
             items: [{
                 price: priceId,
             }],
-            // discounts: [{
-            //     promotion_code: promoId,
-            // }],
+            discounts: [{
+                promotion_code: promoId,
+            }],
             payment_behavior: 'default_incomplete',
             payment_settings: { save_default_payment_method: 'on_subscription' },
-            expand: expand,
+            expand: ['pending_setup_intent', 'latest_invoice.payment_intent'],
         })
-        if (plan == Plan.USAGE && subscription.pending_setup_intent !== null) {
+        if (subscription.pending_setup_intent !== null) {
             return {
                 id: subscription.id,
                 type: "setup",

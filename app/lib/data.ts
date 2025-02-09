@@ -234,6 +234,7 @@ type CouponInfo = {
   promoId?: string,
   promoDesc: string,
   plan: Plan,
+  amount: number,
 }
 
 export const couponInfo: CouponInfo[] = [
@@ -242,6 +243,7 @@ export const couponInfo: CouponInfo[] = [
     promoId: "promo_1Qq6QgBG8kOO7xleESicSKD0",
     promoDesc: 'Get your first month free!',
     plan: Plan.MONTHLY,
+    amount: 0,
   }
 ]
 
