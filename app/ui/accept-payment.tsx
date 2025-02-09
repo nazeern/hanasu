@@ -4,7 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./checkout-form";
 import { loadStripe } from "@stripe/stripe-js";
 import { User } from "@supabase/auth-js";
-import { Plan } from "@/app/lib/data";
+import { Plan, planInfo } from "@/app/lib/data";
 import { useState } from "react";
 
 const stripePromise = loadStripe(
@@ -18,7 +18,7 @@ export default function AcceptPayment({
   user: User;
   plan: Plan;
 }) {
-  const [amount, setAmount] = useState<number>(plan == Plan.USAGE ? 0 : 2500);
+  const [amount, setAmount] = useState<number>(planInfo[plan].amount);
 
   // eslint-disable-next-line
   const options: any = {

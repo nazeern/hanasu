@@ -128,6 +128,7 @@ type PlanInfo = {
   display: string;
   priceId: string;
   limit: number;
+  amount: number;
 }
 
 export const planInfo: { [plan: string]: PlanInfo } = {
@@ -136,18 +137,21 @@ export const planInfo: { [plan: string]: PlanInfo } = {
     display: "Free Plan",
     priceId: "",
     limit: 30,
+    amount: 0,
   },
   [Plan.USAGE]: {
     name: "pay-as-you-go",
     display: "Pay as You Go Plan",
     priceId: process.env.USAGE_PLAN_PRICE_ID ?? "",
-    limit: Infinity
+    limit: Infinity,
+    amount: 0,
   },
   [Plan.MONTHLY]: {
     name: "monthly",
     display: "Monthly Plan",
     priceId: process.env.MONTHLY_PLAN_PRICE_ID ?? "",
-    limit: 1000
+    limit: 1000,
+    amount: 2500,
   },
 }
 
@@ -240,10 +244,10 @@ type CouponInfo = {
 export const couponInfo: CouponInfo[] = [
   {
     promoCode: 'SEIYA',
-    promoId: "promo_1Qq6QgBG8kOO7xleESicSKD0",
-    promoDesc: 'Get your first month free!',
+    promoId: "promo_1QqWKAPlcNs7PaBYHfvhGsYt",
+    promoDesc: 'Get 90% off!',
     plan: Plan.MONTHLY,
-    amount: 0,
+    amount: 250,
   }
 ]
 
