@@ -98,7 +98,7 @@ export default function SigninForm({ sitekey }: { sitekey: string }) {
           </Link>
         </p>
       </form>
-      <p className="text-sm font-light text-gray-500 pt-2">
+      {/* <p className="text-sm font-light text-gray-500 pt-2">
         Just looking?{" "}
         <button
           onClick={handleAnonSignup}
@@ -106,10 +106,11 @@ export default function SigninForm({ sitekey }: { sitekey: string }) {
         >
           Continue as Guest &rarr;
         </button>
-      </p>
+      </p> */}
     </>
   );
 
+  // eslint-disable-next-line
   async function handleAnonSignup() {
     if (!captchaToken) {
       setShowCaptchaPrompt(true);

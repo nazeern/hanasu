@@ -188,7 +188,7 @@ export async function GET(request: NextRequest) {
         .filter((obj) => obj.email && obj.langDisplay)
 
     const promises = userData.map((data) => {
-        transporter.sendMail({
+        return transporter.sendMail({
             from: `"${SENDING_EMAIL_NAME}" <${SENDING_EMAIL_ADDRESS}>`, // sender address
             to: data.email, // list of receivers
             subject: emailSubject(data), // Subject line
