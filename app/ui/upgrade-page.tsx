@@ -24,11 +24,7 @@ export default function UpgradePage({
         paymentAmount={amount}
         setAmount={setAmount}
       />
-      <PlanCard
-        plan={plan}
-        userId={user?.id}
-        amountOverride={currencyString(amount)}
-      />
+      <PlanCard plan={plan} userId={user?.id} amountOverride={undefined} />
     </div>
   );
 }

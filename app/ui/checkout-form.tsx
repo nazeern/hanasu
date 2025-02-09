@@ -33,6 +33,7 @@ export default function CheckoutForm({
   const [promoCode, setPromoCode] = useState<string>("");
   const [promoMessage, setPromoMessage] = useState<string>("");
   const [promoId, setPromoId] = useState<string | undefined>();
+  const [showPromolink, setShowPromoLink] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -66,7 +67,20 @@ export default function CheckoutForm({
             Apply
           </button>
         </div>
-        <p className="text-primary italic mt-1">{promoMessage}</p>
+        <p className="text-primary italic mt-1">
+          {promoMessage}
+          {showPromolink && (
+            <button
+              className="rounded-md bg-primary text-white ml-1 px-1"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.assign("/upgrade?plan=monthly");
+              }}
+            >
+              Go &rarr;
+            </button>
+          )}
+        </p>
         <button
           type="submit"
           disabled={!stripe || loading}
@@ -176,11 +190,13 @@ export default function CheckoutForm({
           planInfo[coupon.plan].display
         }.`
       );
+      setShowPromoLink(true);
       return;
     }
     console.log(coupon);
     setPromoMessage(`Coupon applied! ${coupon.promoDesc}`);
     setPromoId(coupon.promoId);
     setAmount(coupon.amount);
+    setShowPromoLink(false);
   }
 }
