@@ -162,11 +162,13 @@ export default function CheckoutForm({
     const coupon = couponInfo.find((info) => info.promoCode == promoCode);
     if (!promoCode) {
       setPromoMessage("");
+      setAmount(planInfo[plan].initialChargedAmount);
       return;
     }
     if (!coupon) {
       setPromoCode("");
       setPromoMessage("Sorry, this promotion is invalid.");
+      setAmount(planInfo[plan].initialChargedAmount);
       return;
     }
     if (coupon.plan != plan) {
@@ -176,6 +178,7 @@ export default function CheckoutForm({
           planInfo[coupon.plan].display
         }.`
       );
+      setAmount(planInfo[plan].initialChargedAmount);
       return;
     }
     console.log(coupon);

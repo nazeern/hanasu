@@ -23,11 +23,20 @@ export default function AcceptPayment({
   );
 
   // eslint-disable-next-line
-  const options: any = {
-    mode: plan != Plan.USAGE && amount == 0 ? "setup" : "subscription",
-    amount: amount,
-    currency: "usd",
-  };
+  let options: any;
+  if (amount == 0 && plan != Plan.USAGE) {
+    options = {
+      mode: "setup",
+      currency: "usd",
+    };
+  } else {
+    options = {
+      mode: "subscription",
+      amount: amount,
+      currency: "usd",
+    };
+  }
+  console.log(options);
 
   return (
     <Elements stripe={stripePromise} options={options}>
