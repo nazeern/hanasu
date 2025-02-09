@@ -68,9 +68,9 @@ export async function createStripeSubscription(customerId: string, plan: Plan, p
             items: [{
                 price: priceId,
             }],
-            discounts: [{
-                promotion_code: promoId,
-            }],
+            // discounts: [{
+            //     promotion_code: promoId,
+            // }],
             payment_behavior: 'default_incomplete',
             payment_settings: { save_default_payment_method: 'on_subscription' },
             expand: expand,
