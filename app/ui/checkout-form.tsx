@@ -132,7 +132,7 @@ export default function CheckoutForm({
     }
     const { clientSecret, type } = result;
     const confirmIntent =
-      type === "setup" ? stripe.confirmSetup : stripe.confirmPayment;
+      type == "setup" ? stripe.confirmSetup : stripe.confirmPayment;
 
     // Confirm the Intent using the details collected by the Payment Element
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? BASE_URL_DEFAULT;
