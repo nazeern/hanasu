@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/notify-daily-practice",
-      "schedule": "0 17 * * *"
+      "schedule": "0 22 * * *"
     }
   ]
 }
