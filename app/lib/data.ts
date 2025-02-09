@@ -245,7 +245,7 @@ export const couponInfo: CouponInfo[] = [
   {
     promoCode: 'SEIYA',
     promoId: "promo_1QqWKAPlcNs7PaBYHfvhGsYt",
-    promoDesc: 'Get 90% off!',
+    promoDesc: 'Get 90% off your first month!',
     plan: Plan.MONTHLY,
     amount: 250,
   }
