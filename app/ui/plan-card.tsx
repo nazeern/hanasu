@@ -95,11 +95,11 @@ const renderData: { [key in Plan]: PlanDetails } = {
 export default function PlanCard({
   plan,
   userId,
-  amountOverride,
+  displayAmount,
 }: {
   plan: Plan;
   userId?: string;
-  amountOverride?: string;
+  displayAmount?: string;
 }) {
   const data = renderData[plan];
   const signupSearchParams = new URLSearchParams();
@@ -145,7 +145,7 @@ export default function PlanCard({
       )}
       {/* Pricing */}
       <div className="flex items-end gap-x-2 mb-3">
-        <p className="text-5xl">{amountOverride || data.price}</p>
+        <p className="text-5xl">{displayAmount || data.price}</p>
         <p className="text-sm">{data.per}</p>
       </div>
       <hr className="w-full border-b border-gray-300 my-8" />

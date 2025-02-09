@@ -176,27 +176,26 @@ export default function CheckoutForm({
     const coupon = couponInfo.find((info) => info.promoCode == promoCode);
     if (!promoCode) {
       setPromoMessage("");
-      return;
-    }
-    if (!coupon) {
-      setPromoCode("");
+    } else if (!coupon) {
       setPromoMessage("Sorry, this promotion is invalid.");
-      return;
-    }
-    if (coupon.plan != plan) {
-      setPromoCode("");
+    } else if (coupon.plan != plan) {
       setPromoMessage(
         `This promotion is only available on the ${
           planInfo[coupon.plan].display
         }.`
       );
       setShowPromoLink(true);
+    } else {
+      console.log(coupon);
+      setPromoMessage(`Coupon applied! ${coupon.promoDesc}`);
+      setPromoId(coupon.promoId);
+      setAmount(coupon.amount);
+      setShowPromoLink(false);
       return;
     }
-    console.log(coupon);
-    setPromoMessage(`Coupon applied! ${coupon.promoDesc}`);
-    setPromoId(coupon.promoId);
-    setAmount(coupon.amount);
-    setShowPromoLink(false);
+
+    // None of the cases matched
+    setPromoCode("");
+    setAmount(planInfo[plan].baseAmount);
   }
 }

@@ -90,7 +90,11 @@ export function round(value: number, n: number = 2) {
 }
 
 export function currencyString(value: number) {
-  return "$" + (value / 100).toFixed(2)
+  if (value % 100 == 0) {
+    return "$" + round(value / 100)
+  } else {
+    return "$" + (value / 100).toFixed(2)
+  }
 }
 
 export function extractFilename(filename: string): string {

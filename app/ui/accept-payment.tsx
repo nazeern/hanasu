@@ -25,7 +25,7 @@ export default function AcceptPayment({
   // eslint-disable-next-line
   const options: any = {
     mode: "subscription",
-    amount: paymentAmount,
+    amount: plan == Plan.USAGE ? 0 : paymentAmount, // Stripe uses zero price to mean `pending`
     currency: "usd",
   };
 
