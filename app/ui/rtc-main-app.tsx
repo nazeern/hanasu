@@ -10,7 +10,7 @@ import debounce from "lodash/debounce";
 import { insertSession, updateSession } from "@/app/lib/sessions";
 import { LogoTitle } from "@/app/ui/logo";
 import { HomeIcon } from "@heroicons/react/24/solid";
-import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { getJoyrideSteps, langInfo } from "@/app/lib/data";
 import MicButton from "@/app/ui/mic-button";
 import { stripeMeterEvent } from "@/app/lib/stripe";
@@ -67,7 +67,7 @@ export type Interval = {
   end?: number;
 };
 
-type ConnectionState = "connecting" | "connected" | "disconnected";
+type ConnectionState = "connecting" | "connected" | "disconnected" | "denied";
 
 export default function RTCMainApp({
   user,
@@ -197,7 +197,22 @@ export default function RTCMainApp({
         <ProfileIcon initial={user.user_metadata?.name[0]} />
       </div>
       {connState == "disconnected" && <SessionOverview session={session} />}
-      {connState == "connecting" ? (
+      {connState == "denied" ? (
+        <div className="h-full w-full pb-48 flex flex-col items-center justify-center gap-4">
+          <p className="text-lg font-bold">
+            Oops, seems like we can&apos;t hear you!
+          </p>
+          <p className="text-center">
+            Please enable microphone permissions in your browser settings.
+          </p>
+          <IconButton
+            className="px-2 py-1 rounded-full bg-primary text-white"
+            icon={ArrowPathIcon}
+            text="Try Again"
+            onClick={startSession}
+          />
+        </div>
+      ) : connState == "connecting" ? (
         <div className="h-full w-full pb-48 flex flex-col items-center justify-center gap-4">
           <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
           Checking if Kohtaro is available...
@@ -291,7 +306,7 @@ export default function RTCMainApp({
   }
 
   /** Create a WebRTC session with OpenAI agent. */
-  async function initRTC(): Promise<RTCManager> {
+  async function initRTC(): Promise<RTCManager | null> {
     console.log("init RTC connection");
     setConnState("connecting");
     // When we recv track, autoplay
@@ -304,9 +319,15 @@ export default function RTCMainApp({
 
     // Send microphone input from browser
     // Start as enabled=false, so mute functionality works
-    const ms = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-    });
+    let ms: MediaStream;
+    try {
+      ms = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+    } catch (error) {
+      setConnState("denied");
+      return null;
+    }
     const localTrack = ms.getTracks()[0];
     localTrack.enabled = false;
     conn.addTrack(localTrack);
@@ -377,11 +398,13 @@ export default function RTCMainApp({
   /** Update the prompt of the AI session. */
   async function startSession(topic: string) {
     console.log("starting session");
-    const [rtcSession, sessionId] = await Promise.all([
-      initRTC(),
-      insertSession(user.id, lang),
-    ]);
+    const rtcSession = await initRTC();
+    if (!rtcSession) {
+      return;
+    }
     rtc.current = rtcSession;
+
+    const sessionId = await insertSession(user.id, lang);
 
     // Configure local audio transcription & topic
     const langName =

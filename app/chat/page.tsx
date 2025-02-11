@@ -30,17 +30,35 @@ export default async function ChatPage({
   const { plan } = await getCurrentPlan(user.id);
   const limit = planInfo[plan].limit;
   const sessions = await querySessions(user.id);
-  const totalConversationTime =
-    sessions.reduce((acc, s) => acc + s.duration, 0) / 60;
+  const totalConversationTime = sessions.reduce(
+    (acc, s) => acc + s.duration,
+    0
+  );
   const expense = await totalCost(sessions);
   const revenue = (await upcomingCost(user.id)) ?? 0;
 
   // Check plan limit
-  if (totalConversationTime > limit) {
+  if (totalConversationTime / 60 > limit) {
+    const avgResponseDuration = Math.round(
+      sessions.reduce((acc, s) => acc + s.avgResponseDurationMs, 0) /
+        sessions.filter((s) => s.avgResponseDurationMs != 0).length
+    );
+    const totalResponses = sessions.reduce((acc, s) => acc + s.nResponses, 0);
     console.log(
       `total conversation time of ${totalConversationTime} over limit of ${limit}`
     );
-    return <PaywallMainApp user={user} plan={plan} limit={limit} />;
+    return (
+      <PaywallMainApp
+        user={user}
+        plan={plan}
+        limit={limit}
+        progressData={{
+          totalConversationTime,
+          avgResponseDuration,
+          totalResponses,
+        }}
+      />
+    );
   }
 
   // Check product cost
