@@ -52,7 +52,7 @@ export default function OnboardPage({
       <BlurTop />
       <BlurBottom />
       <LogoTitle />
-      <p className="mt-36 mb-4 text-2xl">{info.title}</p>
+      <p className="mt-28 mb-4 text-2xl">{info.title}</p>
       <video
         key={page}
         className="rounded-xl shadow-2xl border-2 border-primary w-full h-fit"
