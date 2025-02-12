@@ -209,7 +209,7 @@ export default function RTCMainApp({
             className="px-2 py-1 rounded-full bg-primary text-white"
             icon={ArrowPathIcon}
             text="Try Again"
-            onClick={startSession}
+            onClick={() => window.location.reload()}
           />
         </div>
       ) : connState == "connecting" ? (
