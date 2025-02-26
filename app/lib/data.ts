@@ -7,7 +7,7 @@ export const VOCAB_DELAY_FACTOR = 0.75
 
 export const topics = [
     "How is the weather today?",
-    "What kind of music do you like?",
+    "Do you prefer coffee or tea?",
     "What did you do today?",
 ]
 
