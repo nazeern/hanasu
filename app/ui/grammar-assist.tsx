@@ -13,7 +13,12 @@ export default function GrammarAssist({ message }: { message: string }) {
         onClick={() => setOpen(false)}
         className="self-end bg-blue-300 text-blue-600 italic rounded text-sm px-2 py-2 max-w-80 w-fit"
       >
-        <p>{message}</p>
+        <p>
+          {message}
+          <span className="not-italic text-blue-300 bg-blue-600 rounded-full px-1 ml-3">
+            Beta
+          </span>
+        </p>
       </div>
     );
   }
