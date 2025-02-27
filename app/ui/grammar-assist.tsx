@@ -15,7 +15,7 @@ export default function GrammarAssist({ message }: { message: string }) {
       >
         <p>
           {message}
-          <span className="not-italic text-blue-300 bg-blue-600 rounded-full px-1 ml-3">
+          <span className="not-italic text-blue-300 bg-blue-600 rounded-full px-2 ml-2">
             Beta
           </span>
         </p>
