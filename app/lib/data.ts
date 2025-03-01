@@ -6,7 +6,7 @@ import { idSelectZh, selectZh } from "@/app/lib/zh-CN_dict";
 export const VOCAB_DELAY_FACTOR = 0.75
 
 export const topics = [
-    "How is the weather today?",
+    "What do you do at work?",
     "Do you prefer coffee or tea?",
     "What did you do today?",
 ]
