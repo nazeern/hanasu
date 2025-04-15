@@ -148,6 +148,9 @@ const transporter = nodemailer.createTransport({
 
 
 export async function GET(request: NextRequest) {
+    // Temporarily disable the daily notification
+    return new NextResponse("Daily notifications are temporarily disabled.", { status: 200 });
+
     const authHeader = request.headers.get('authorization');
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
         return new Response('Unauthorized', {
