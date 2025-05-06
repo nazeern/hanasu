@@ -344,7 +344,7 @@ export default function RTCMainApp({
     await conn.setLocalDescription(offer);
 
     const baseUrl = "https://api.openai.com/v1/realtime";
-    const model = "gpt-4o-mini-realtime-preview-2024-12-17";
+    const model = "gpt-4o-mini-realtime-preview";
     const sdpResponse = await fetch(`${baseUrl}?model=${model}`, {
       method: "POST",
       body: offer.sdp,
@@ -404,8 +404,6 @@ export default function RTCMainApp({
     }
     rtc.current = rtcSession;
 
-    const sessionId = await insertSession(user.id, lang);
-
     // Configure local audio transcription & topic
     const langName =
       langInfo.find((info) => info.lang == lang)?.name ?? "English";
@@ -446,7 +444,9 @@ export default function RTCMainApp({
     });
 
     // Store chosen topic
+    const sessionId = await insertSession(user.id, lang);
     setSession((s) => ({ ...s, id: sessionId, topic: topic }));
+
     sessionStart.current = performance.now();
   }
 
